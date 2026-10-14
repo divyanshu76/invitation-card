@@ -1,0 +1,570 @@
+/* ==========================================================================
+   LUXURY INDIAN WEDDING DESIGN SYSTEM
+   Theme: Luxury Editorial × Modern Indian Romance × Gen Z Aesthetic
+   ========================================================================== */
+
+:root {
+  /* Color Palette */
+  --bg-warm-ivory: #F8F3EC;
+  --bg-secondary: #F1E8DE;
+  --bg-card: rgba(255, 255, 255, 0.65);
+  --bg-card-solid: #FCFAF7;
+  --bg-soft-blush: #F0DEDD;
+  --bg-subtle-glow: rgba(196, 163, 106, 0.08);
+
+  --text-primary: #542637;      /* Deep Wine */
+  --text-accent: #702D43;       /* Muted Burgundy */
+  --text-body: #796A67;         /* Warm Body Gray-Brown */
+  --text-muted: #9E8F8C;
+  --text-champagne: #A88647;
+
+  --accent-gold: #C4A36A;        /* Champagne Gold */
+  --accent-gold-light: #E4D5BC;
+  --accent-gold-soft: rgba(196, 163, 106, 0.25);
+  --accent-rose: #DDAFB6;        /* Dusty Rose */
+  --accent-rose-soft: rgba(221, 175, 182, 0.3);
+  --accent-blush: #F0DEDD;
+
+  /* Ceremony Accent Colors */
+  --haldi-gold: #D49024;
+  --haldi-bg: #FCF7EE;
+  --mehendi-sage: #4E6B56;
+  --mehendi-bg: #F2F6F3;
+  --wedding-wine: #702D43;
+  --wedding-bg: #FAF3F5;
+  --vidai-rose: #B27382;
+  --vidai-bg: #FAF4F6;
+
+  /* Typography */
+  --font-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-hindi: 'Noto Serif Devanagari', serif;
+
+  /* Radii & Borders — Soft, Luxury Editorial System */
+  --radius-xs: 8px;
+  --radius-sm: 14px;
+  --radius-md: 20px;
+  --radius-lg: 26px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+  --border-champagne: 1px solid rgba(196, 163, 106, 0.3);
+  --border-subtle: 1px solid rgba(84, 38, 55, 0.1);
+
+  /* Shadows */
+  --shadow-subtle: 0 4px 20px -2px rgba(84, 38, 55, 0.05);
+  --shadow-editorial: 0 12px 35px -8px rgba(84, 38, 55, 0.08);
+  --shadow-elevated: 0 20px 45px -12px rgba(84, 38, 55, 0.12);
+
+  /* Easing */
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Hide scrollbar visually while preserving all vertical scrolling */
+html {
+  font-family: var(--font-sans);
+  background-color: var(--bg-warm-ivory);
+  color: var(--text-body);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  /* Cross-browser scrollbar hiding */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE / Edge */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+body {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE / Edge */
+  background-color: var(--bg-warm-ivory);
+  background-image: radial-gradient(circle at 50% 0%, rgba(221, 175, 182, 0.07) 0%, transparent 60%),
+                    radial-gradient(circle at 10% 40%, rgba(196, 163, 106, 0.04) 0%, transparent 50%),
+                    radial-gradient(circle at 90% 70%, rgba(84, 38, 55, 0.03) 0%, transparent 50%);
+}
+
+/* Subtle paper texture overlay */
+.paper-texture-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Typography Utilities */
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+.font-hindi {
+  font-family: var(--font-hindi);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+p {
+  line-height: 1.7;
+  color: var(--text-body);
+}
+
+/* Layout Utilities */
+.container {
+  width: 100%;
+  max-width: 1240px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+}
+
+/* Editorial Dividers & Accents */
+.editorial-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  border: none;
+}
+
+.editorial-line-full {
+  height: 1px;
+  background-color: rgba(196, 163, 106, 0.25);
+  border: none;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+/* Button & Interactive Elements */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: var(--text-primary);
+  color: #FFFFFF;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  border: 1px solid var(--text-primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.3s var(--ease-editorial);
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--text-accent);
+  border-color: var(--text-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(84, 38, 55, 0.22);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 13px 26px;
+  border: 1px solid var(--accent-gold);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.3s var(--ease-editorial);
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(196, 163, 106, 0.12);
+  border-color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(196, 163, 106, 0.2);
+}
+
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: #25D366;
+  color: #FFFFFF;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 14px 26px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.3s var(--ease-editorial);
+  text-decoration: none;
+}
+
+.btn-whatsapp:hover {
+  background-color: #1EBE5D;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(37, 211, 102, 0.3);
+}
+
+/* Modal Backdrop */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 14, 20, 0.65);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Form Controls */
+.input-field {
+  width: 100%;
+  padding: 14px 18px;
+  background: #FCFAF7;
+  border: 1px solid rgba(196, 163, 106, 0.35);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-field:focus {
+  border-color: var(--text-primary);
+  box-shadow: 0 0 0 3px rgba(84, 38, 55, 0.08);
+}
+
+/* Accessibility: Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVE SYSTEM (Eliminate excessive vertical whitespace)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* 1. Global Section Spacing: Replace 100-110px padding with balanced 44-52px */
+  section {
+    padding-top: 48px !important;
+    padding-bottom: 52px !important;
+  }
+
+  /* 2. Hero Section */
+  #hero {
+    min-height: auto !important;
+    padding-top: 85px !important;
+    padding-bottom: 28px !important;
+  }
+
+  #hero h1 {
+    font-size: clamp(2.3rem, 8.5vw, 3.6rem) !important;
+    line-height: 1.12 !important;
+  }
+
+  #hero h1 span {
+    font-size: 1.35rem !important;
+    margin: 2px 0 !important;
+  }
+
+  .hero-scroll-indicator {
+    margin-top: 18px !important;
+  }
+
+  /* 3. Section Headers & Margins */
+  section .container > div:first-child,
+  section .container > motion\.div:first-child {
+    margin-bottom: 30px !important;
+  }
+
+  /* 4. Countdown Section */
+  #countdown-section {
+    padding-top: 32px !important;
+    padding-bottom: 38px !important;
+  }
+
+  #countdown-section h2 {
+    font-size: clamp(1.5rem, 5.5vw, 2.2rem) !important;
+    margin-bottom: 4px !important;
+  }
+
+  #countdown-section p {
+    margin-bottom: 18px !important;
+  }
+
+  .countdown-grid {
+    padding: 16px 8px !important;
+  }
+
+  .countdown-unit-box {
+    padding: 4px 6px !important;
+  }
+
+  .countdown-unit-box > div:first-child {
+    font-size: clamp(1.6rem, 6.5vw, 2.4rem) !important;
+  }
+
+  .countdown-unit-box span {
+    font-size: 0.62rem !important;
+  }
+
+  /* 5. Ganesh Blessing Section */
+  #ganesh-blessing {
+    padding-top: 44px !important;
+    padding-bottom: 48px !important;
+  }
+
+  .ganesh-artwork-card {
+    max-width: 240px !important;
+    margin: 0 auto 20px !important;
+    padding: 10px !important;
+  }
+
+  .ganesh-artwork-card img {
+    max-height: 330px !important;
+    object-fit: contain !important;
+  }
+
+  /* 6. Divine Blessings Section */
+  #blessings {
+    padding-top: 44px !important;
+    padding-bottom: 48px !important;
+  }
+
+  .divine-artwork-card {
+    max-width: 270px !important;
+    margin: 0 auto 20px !important;
+    padding: 12px !important;
+  }
+
+  /* Layout: Equal margins and zero horizontal overflow */
+  .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 7. Celebrations (Ceremonies) Section */
+  #celebrations {
+    padding-top: 48px !important;
+    padding-bottom: 54px !important;
+    overflow-x: hidden !important;
+  }
+
+  #celebrations article {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 20px 16px !important;
+    margin: 0 auto !important;
+    border-radius: var(--radius-md) !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  .wedding-highlight-card {
+    margin-top: 18px !important;
+  }
+
+  .ceremony-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 18px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .ceremony-img-col,
+  .ceremony-text-col {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    grid-column: auto !important;
+  }
+
+  .ceremony-img-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    border-radius: var(--radius-sm) !important;
+  }
+
+  .ceremony-photo {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 10 !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+
+  .ceremony-details-box {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    padding: 14px 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .ceremony-detail-item {
+    width: 100% !important;
+    grid-column: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 8. Timeline Section */
+  #timeline {
+    padding-top: 44px !important;
+    padding-bottom: 48px !important;
+    overflow-x: hidden !important;
+  }
+
+  .timeline-content-col > div {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 18px 16px !important;
+  }
+
+  /* 9. Venue Section */
+  #venue {
+    padding-top: 44px !important;
+    padding-bottom: 48px !important;
+    overflow-x: hidden !important;
+  }
+
+  .venue-composition {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 22px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .venue-info-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 24px 18px !important;
+    box-sizing: border-box !important;
+    grid-column: auto !important;
+  }
+
+  .venue-map-col {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    grid-column: auto !important;
+  }
+
+  /* Story Layout */
+  .story-editorial-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+    width: 100% !important;
+  }
+
+  .story-col-left, .story-col-center, .story-col-right {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 10. RSVP Section & Modal */
+  #rsvp {
+    padding-top: 44px !important;
+    padding-bottom: 48px !important;
+  }
+
+  .rsvp-modal-content {
+    padding: 22px 18px !important;
+    border-radius: var(--radius-md) !important;
+    max-height: min(88vh, 600px) !important;
+  }
+
+  /* 11. Closing Section */
+  footer, #closing-section, section[aria-label*="Closing"] {
+    padding-top: 44px !important;
+    padding-bottom: 40px !important;
+  }
+}
+
