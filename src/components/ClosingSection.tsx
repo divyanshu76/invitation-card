@@ -148,6 +148,49 @@ export const ClosingSection: React.FC = () => {
           >
             Maurya Palace · {weddingData.cityLocation} · {weddingData.formattedWeddingDate}
           </p>
+
+          {/* Footer Credit */}
+          <div
+            style={{
+              marginTop: '40px',
+              paddingTop: '20px',
+              borderTop: '1px solid rgba(196, 163, 106, 0.15)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+          >
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '0.70rem',
+                letterSpacing: '0.12em',
+                color: 'var(--text-muted)',
+                opacity: 0.7,
+              }}
+            >
+              Created with ♥ by DeadCode Labs
+            </p>
+            <a
+              href="https://deadcode.space"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '0.68rem',
+                letterSpacing: '0.14em',
+                color: 'var(--accent-gold)',
+                opacity: 0.65,
+                textDecoration: 'none',
+                transition: 'opacity 0.25s ease',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
+              onMouseLeave={e => (e.currentTarget.style.opacity = '0.65')}
+            >
+              ↗ deadcode.space
+            </a>
+          </div>
         </motion.div>
       </div>
     </footer>

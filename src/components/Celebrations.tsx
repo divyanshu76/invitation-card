@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, MapPin, Sparkles, Navigation } from 'lucide-react';
+import { Calendar, MapPin, Sparkles, Navigation } from 'lucide-react';
 import { weddingData, getWeekdayName, type Ceremony } from '../data/weddingData';
 
 export const Celebrations: React.FC = () => {
@@ -282,12 +282,6 @@ export const Celebrations: React.FC = () => {
                         <Calendar size={15} color={ceremony.accentColor} style={{ flexShrink: 0 }} />
                         <span style={{ fontSize: '0.84rem', color: 'var(--text-primary)', fontWeight: 500 }}>
                           {weekday}, {ceremony.displayDate}
-                        </span>
-                      </div>
-                      <div className="ceremony-detail-item" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Clock size={15} color={ceremony.accentColor} style={{ flexShrink: 0 }} />
-                        <span style={{ fontSize: '0.84rem', color: 'var(--text-primary)', fontStyle: ceremony.time ? 'normal' : 'italic' }}>
-                          {ceremony.time || ceremony.timeGracefulLabel}
                         </span>
                       </div>
                       <div className="ceremony-detail-item ceremony-detail-venue" style={{ display: 'flex', alignItems: 'center', gap: '8px', gridColumn: 'span 2' }}>

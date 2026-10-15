@@ -1,4 +1,4 @@
-/**
+  /**
  * CENTRALIZED WEDDING DATA CONFIGURATION
  * Wedding: VIKASH WEDS JYOTI
  * Venue: Maurya Palace, Mau, Uttar Pradesh
@@ -200,13 +200,13 @@ export const weddingData: WeddingConfig = {
       displayDate: "18 November 2026",
       time: undefined, // Explicitly not invented
       timeGracefulLabel: "समय शीघ्र साझा किया जाएगा (Time to be announced)",
-      venueName: "Maurya Palace",
-      venueAddress: "Baghpur, Near Airtel Tower, Mau – 275101",
+      venueName: "Chhitauni",
+      venueAddress: "Near Malipur, Belthara Road, Uttar Pradesh, India",
       description: "An auspicious ceremony of golden turmeric, fragrant blossoms, laughter, and blessings as we begin our wedding festivities.",
       image: "/images/haldi.jpg",
       accentColor: "#D49024",
       badgeText: "AUSPICIOUS RITUAL",
-      directionsUrl: "https://www.google.com/maps/search/?api=1&query=Maurya+Palace+Baghpur+Mau+275101",
+      directionsUrl: "https://www.google.com/maps/search/?api=1&query=Chhitauni+Near+Malipur+Belthara+Road+Uttar+Pradesh+India",
     },
     {
       id: "mehendi",
@@ -218,13 +218,13 @@ export const weddingData: WeddingConfig = {
       displayDate: "19 November 2026",
       time: undefined, // Explicitly not invented
       timeGracefulLabel: "समय शीघ्र साझा किया जाएगा (Time to be announced)",
-      venueName: "Maurya Palace",
-      venueAddress: "Baghpur, Near Airtel Tower, Mau – 275101",
+      venueName: "Chhitauni",
+      venueAddress: "Near Malipur, Belthara Road, Uttar Pradesh, India",
       description: "A joyous celebration adorned with intricate henna art, cheerful melodies, festive colors, and cherished moments with loved ones.",
       image: "/images/mehendi.jpg",
       accentColor: "#4E6B56",
       badgeText: "HENNA & CELEBRATION",
-      directionsUrl: "https://www.google.com/maps/search/?api=1&query=Maurya+Palace+Baghpur+Mau+275101",
+      directionsUrl: "https://www.google.com/maps/search/?api=1&query=Chhitauni+Near+Malipur+Belthara+Road+Uttar+Pradesh+India",
     },
     {
       id: "wedding",
