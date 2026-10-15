@@ -292,6 +292,90 @@ export const Celebrations: React.FC = () => {
                       </div>
                     </div>
 
+                    {/* Baraat Departure Announcement Card (20 November Wedding Only) */}
+                    {ceremony.baraatAnnouncement && (
+                      <div
+                        style={{
+                          margin: '10px 0 6px',
+                          padding: '16px 20px',
+                          backgroundColor: '#FAF3F5',
+                          border: '1.5px solid rgba(196, 163, 106, 0.45)',
+                          borderLeft: '4px solid var(--wedding-wine)',
+                          borderRadius: 'var(--radius-sm)',
+                          boxShadow: '0 4px 16px rgba(112, 45, 67, 0.08)',
+                        }}
+                        className="baraat-departure-card"
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                          <Sparkles size={15} color="var(--accent-gold)" style={{ flexShrink: 0 }} />
+                          <span
+                            style={{
+                              fontFamily: 'var(--font-sans)',
+                              fontSize: '0.7rem',
+                              fontWeight: 700,
+                              letterSpacing: '0.15em',
+                              textTransform: 'uppercase',
+                              color: 'var(--wedding-wine)',
+                            }}
+                          >
+                            BARAAT DEPARTURE · बारात प्रस्थान
+                          </span>
+                        </div>
+
+                        {/* Hindi Announcement (Prominent) */}
+                        <p
+                          style={{
+                            fontFamily: 'var(--font-hindi)',
+                            fontSize: '1rem',
+                            fontWeight: 600,
+                            color: 'var(--text-primary)',
+                            lineHeight: 1.55,
+                            marginBottom: '6px',
+                          }}
+                        >
+                          बारात मेरे निजी निवास छितौनी · मालीपुर के पास, बेल्थरा रोड से{' '}
+                          <span
+                            style={{
+                              color: 'var(--wedding-wine)',
+                              fontWeight: 700,
+                              backgroundColor: 'rgba(196, 163, 106, 0.22)',
+                              padding: '2px 7px',
+                              borderRadius: '4px',
+                              display: 'inline-block',
+                            }}
+                          >
+                            शाम 4 बजे
+                          </span>{' '}
+                          मऊ के लिए प्रस्थान करेगी।
+                        </p>
+
+                        {/* English Translation */}
+                        <p
+                          style={{
+                            fontFamily: 'var(--font-sans)',
+                            fontSize: '0.86rem',
+                            color: 'var(--text-body)',
+                            lineHeight: 1.5,
+                          }}
+                        >
+                          The wedding procession (Baraat) will depart for Mau at{' '}
+                          <strong
+                            style={{
+                              color: 'var(--wedding-wine)',
+                              fontWeight: 700,
+                              backgroundColor: 'rgba(196, 163, 106, 0.22)',
+                              padding: '1px 6px',
+                              borderRadius: '4px',
+                              display: 'inline-block',
+                            }}
+                          >
+                            4:00 PM
+                          </strong>{' '}
+                          from my residence in Chhitauni, near Malipur, Belthara Road.
+                        </p>
+                      </div>
+                    )}
+
                     {/* Description */}
                     <p style={{ fontSize: '0.9rem', lineHeight: 1.65, color: 'var(--text-body)' }}>
                       {ceremony.description}

@@ -29,6 +29,10 @@ export interface Ceremony {
   accentColor: string;
   badgeText: string;
   directionsUrl: string;
+  baraatAnnouncement?: {
+    hindiText: string;
+    englishText: string;
+  };
 }
 
 export interface WeddingConfig {
@@ -83,6 +87,9 @@ export interface WeddingConfig {
     contacts: VenueContact[];
   };
 
+  // Family Contact Numbers
+  familyContacts: string[];
+
   // Couple Story (Generic, respectful, no invented biographies)
   story: {
     heading: string;
@@ -135,15 +142,15 @@ export const weddingData: WeddingConfig = {
   venue: {
     name: "MAURYA PALACE",
     description: "Marriage Hall • AC Rooms Available • Birthday Parties • Meeting Hall",
-    addressHindi: "बघपुर, निकट एयरटेल टावर, मऊ – 275101",
-    addressEnglish: "Baghpur, Near Airtel Tower, Mau – 275101, Uttar Pradesh, India",
+    addressHindi: "बरपुर, निकट एयरटेल टावर, मऊ – 275101",
+    addressEnglish: "Barpur, Near Airtel Tower, Mau – 275101, Uttar Pradesh, India",
     city: "Mau",
     state: "Uttar Pradesh",
     pincode: "275101",
-    mapQuery: "Maurya Palace Baghpur Mau Uttar Pradesh 275101",
+    mapQuery: "Maurya Palace Barpur Mau Uttar Pradesh 275101",
     // Reliable address-based Google Maps embed
-    mapEmbedUrl: "https://maps.google.com/maps?q=Maurya+Palace+Baghpur+Mau+Uttar+Pradesh+275101&t=&z=15&ie=UTF8&iwloc=&output=embed",
-    directionsUrl: "https://www.google.com/maps/search/?api=1&query=Maurya+Palace+Baghpur+Mau+275101",
+    mapEmbedUrl: "https://maps.google.com/maps?q=Maurya+Palace+Barpur+Mau+Uttar+Pradesh+275101&t=&z=15&ie=UTF8&iwloc=&output=embed",
+    directionsUrl: "https://www.google.com/maps/search/?api=1&query=Maurya+Palace+Barpur+Mau+275101",
     contacts: [
       {
         role: "Proprietor",
@@ -159,6 +166,13 @@ export const weddingData: WeddingConfig = {
       },
     ],
   },
+
+  // Family Contact Numbers (Click-to-call)
+  familyContacts: [
+    "9452664489",
+    "7800818318",
+    "9170011192",
+  ],
 
   // Ganesh Blessing Invocation
   ganeshBlessing: {
@@ -237,12 +251,16 @@ export const weddingData: WeddingConfig = {
       time: undefined, // Explicitly not invented
       timeGracefulLabel: "समय शीघ्र साझा किया जाएगा (Time to be announced)",
       venueName: "Maurya Palace",
-      venueAddress: "Baghpur, Near Airtel Tower, Mau – 275101",
+      venueAddress: "Barpur, Near Airtel Tower, Mau – 275101",
       description: "The sacred union where two souls pledge seven eternal vows around the holy agni, embarking upon a lifetime of shared joy, companionship, and devotion.",
       image: "/images/wedding.jpg",
       accentColor: "#702D43",
       badgeText: "THE SACRED PHERAS",
-      directionsUrl: "https://www.google.com/maps/search/?api=1&query=Maurya+Palace+Baghpur+Mau+275101",
+      directionsUrl: "https://www.google.com/maps/search/?api=1&query=Maurya+Palace+Barpur+Mau+275101",
+      baraatAnnouncement: {
+        hindiText: "बारात मेरे निजी निवास छितौनी · मालीपुर के पास, बेल्थरा रोड से शाम 4 बजे मऊ के लिए प्रस्थान करेगी।",
+        englishText: "The wedding procession (Baraat) will depart for Mau at 4:00 PM from my residence in Chhitauni, near Malipur, Belthara Road.",
+      },
     },
     {
       id: "vidai",
@@ -255,12 +273,12 @@ export const weddingData: WeddingConfig = {
       time: undefined, // Explicitly not invented
       timeGracefulLabel: "समय शीघ्र साझा किया जाएगा (Time to be announced)",
       venueName: "Maurya Palace",
-      venueAddress: "Baghpur, Near Airtel Tower, Mau – 275101",
+      venueAddress: "Barpur, Near Airtel Tower, Mau – 275101",
       description: "A tender, heartfelt moment of new beginnings and fond embraces, accompanied by the unconditional blessings of parents and family.",
       image: "/images/vidai.jpg",
       accentColor: "#B27382",
       badgeText: "A GRACEFUL FAREWELL",
-      directionsUrl: "https://www.google.com/maps/search/?api=1&query=Maurya+Palace+Baghpur+Mau+275101",
+      directionsUrl: "https://www.google.com/maps/search/?api=1&query=Maurya+Palace+Barpur+Mau+275101",
     },
   ],
 

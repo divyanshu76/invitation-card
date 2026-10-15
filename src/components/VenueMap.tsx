@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Navigation, Phone, Sparkles } from 'lucide-react';
+import { MapPin, Navigation, Phone, Sparkles, Users } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
 
 export const VenueMap: React.FC = () => {
@@ -209,6 +209,49 @@ export const VenueMap: React.FC = () => {
                           📞 {contact.formattedPhone}
                         </a>
                       </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Family Contact Numbers / पारिवारिक संपर्क सूत्र */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                <div style={{ marginTop: '3px' }}>
+                  <Users size={18} color="var(--accent-gold)" />
+                </div>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
+                    <span style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+                      Family Contact Numbers
+                    </span>
+                    <span style={{ fontFamily: 'var(--font-hindi)', fontSize: '0.82rem', color: 'var(--accent-gold)', fontWeight: 500 }}>
+                      पारिवारिक संपर्क सूत्र
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    {weddingData.familyContacts.map((phone) => (
+                      <a
+                        key={phone}
+                        href={`tel:${phone}`}
+                        style={{
+                          fontSize: '0.86rem',
+                          color: 'var(--text-accent)',
+                          textDecoration: 'none',
+                          fontWeight: 600,
+                          padding: '4px 10px',
+                          backgroundColor: 'rgba(196, 163, 106, 0.12)',
+                          borderRadius: 'var(--radius-xs)',
+                          transition: 'all 0.2s ease',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                        }}
+                        className="phone-link"
+                        title={`Call ${phone}`}
+                      >
+                        <span>📞</span>
+                        <span>{phone}</span>
+                      </a>
                     ))}
                   </div>
                 </div>
