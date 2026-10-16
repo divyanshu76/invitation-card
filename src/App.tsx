@@ -4,7 +4,7 @@ import { ScrollProgress } from './components/ScrollProgress';
 import { PetalBackground } from './components/PetalBackground';
 import { AudioPlayer } from './components/AudioPlayer';
 import { Navbar } from './components/Navbar';
-import { Hero } from './components/Hero';
+import { ScrollSequenceHero } from './components/ScrollSequenceHero';
 import { Countdown } from './components/Countdown';
 import { GaneshBlessing } from './components/GaneshBlessing';
 import { CoupleStory } from './components/CoupleStory';
@@ -41,8 +41,8 @@ export const App: React.FC = () => {
       <Navbar />
 
       <main>
-        {/* 1. Cinematic Hero Section */}
-        <Hero />
+        {/* 1. Cinematic Scroll-Animation Hero Section */}
+        <ScrollSequenceHero isUnlocked={isUnlocked} />
 
         {/* 2. Live Wedding Countdown — Directly below Hero */}
         <Countdown />
