@@ -4,10 +4,11 @@ import { ScrollProgress } from './components/ScrollProgress';
 import { PetalBackground } from './components/PetalBackground';
 import { AudioPlayer } from './components/AudioPlayer';
 import { Navbar } from './components/Navbar';
-import { ScrollSequenceHero } from './components/ScrollSequenceHero';
+import { Hero } from './components/Hero';
 import { Countdown } from './components/Countdown';
 import { GaneshBlessing } from './components/GaneshBlessing';
 import { CoupleStory } from './components/CoupleStory';
+import { OurMoments } from './components/OurMoments';
 import { DivineBlessings } from './components/DivineBlessings';
 import { Celebrations } from './components/Celebrations';
 import { Timeline } from './components/Timeline';
@@ -41,8 +42,8 @@ export const App: React.FC = () => {
       <Navbar />
 
       <main>
-        {/* 1. Cinematic Scroll-Animation Hero Section */}
-        <ScrollSequenceHero isUnlocked={isUnlocked} />
+        {/* 1. Cinematic Hero Section */}
+        <Hero />
 
         {/* 2. Live Wedding Countdown — Directly below Hero */}
         <Countdown />
@@ -52,6 +53,9 @@ export const App: React.FC = () => {
 
         {/* 4. The Couple Story (The Beginning of Forever) */}
         <CoupleStory />
+
+        {/* 4.5. Our Moments — Polaroid Hanging Line Carousel */}
+        <OurMoments />
 
         {/* 5. Divine Blessings (Lord Shiva & Goddess Parvati) */}
         <DivineBlessings />
