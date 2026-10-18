@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Send, MessageCircle, Check, X, Sparkles, Copy } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { weddingData } from '../data/weddingData';
+import { SectionDecor } from './decor/SectionDecor';
 
 interface GuestWish {
   id: string;
@@ -184,6 +185,8 @@ export const RSVPSection: React.FC = () => {
       }}
       aria-label="RSVP and Wishes"
     >
+      <SectionDecor variant="rsvp" />
+
       <div className="container">
         {/* Section Header */}
         <motion.div
@@ -350,6 +353,7 @@ export const RSVPSection: React.FC = () => {
             {wishes.map((wish) => (
               <div
                 key={wish.id}
+                className="lux-card lux-edge wish-card"
                 style={{
                   padding: '22px 20px',
                   backgroundColor: 'rgba(252, 250, 247, 0.9)',

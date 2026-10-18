@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, useMotionValue, useScroll, useSpring, useTransform, type Variants } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
+import { SectionDecor } from './decor/SectionDecor';
 
 interface HeroProps {
   /** Entrance choreography waits for the envelope to open, so it is actually seen. */
@@ -181,6 +182,9 @@ export const Hero: React.FC<HeroProps> = ({ revealed = true }) => {
             />
           ))}
       </div>
+
+      {/* Indian wedding framing: marigold toran, Mughal arch, floral corners */}
+      <SectionDecor variant="hero" />
 
       {/* Hero Content */}
       <motion.div

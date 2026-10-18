@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
+import { SectionDecor } from './decor/SectionDecor';
 
 const CLOSING_DUST = [
   { left: '12%', top: '30%', size: 2.5, delay: 0, dur: 10 },
@@ -25,6 +26,8 @@ export const ClosingSection: React.FC = () => {
       }}
       aria-label="Wedding Closing and Family Regards"
     >
+      <SectionDecor variant="closing" />
+
       {/* Soft atmospheric finale: breathing candle-light halo + drifting gold dust */}
       <div className="hero-atmosphere" aria-hidden="true">
         <span className="closing-glow" />
@@ -154,6 +157,7 @@ export const ClosingSection: React.FC = () => {
               margin: '0 auto 36px',
               boxShadow: 'var(--shadow-subtle)',
             }}
+            className="lux-card lux-edge"
           >
             <p
               style={{

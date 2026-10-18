@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Heart, Sparkles } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
 import { TiltCard } from './TiltCard';
+import { SectionDecor } from './decor/SectionDecor';
 
 export const CoupleStory: React.FC = () => {
   return (
@@ -18,6 +19,8 @@ export const CoupleStory: React.FC = () => {
       }}
       aria-label="The Beginning of Forever"
     >
+      <SectionDecor variant="story" />
+
       <div className="container">
         {/* Section Header */}
         <motion.div
@@ -84,6 +87,7 @@ export const CoupleStory: React.FC = () => {
             textAlign: 'center',
             borderRadius: 'var(--radius-lg)',
           }}
+          className="lux-card lux-edge"
         >
           <div
             style={{
@@ -93,6 +97,7 @@ export const CoupleStory: React.FC = () => {
               gap: '20px',
               flexWrap: 'wrap',
             }}
+            className="story-names-row"
           >
             <span
               style={{
@@ -163,10 +168,11 @@ export const CoupleStory: React.FC = () => {
           >
             <TiltCard max={4} style={{ borderRadius: 'var(--radius-lg)' }}>
             <div
+              className="lux-card lux-card--layered"
               style={{
                 position: 'relative',
                 border: '1px solid rgba(196, 163, 106, 0.4)',
-                padding: '12px',
+                padding: '14px',
                 backgroundColor: '#FCFAF7',
                 boxShadow: 'var(--shadow-editorial)',
                 borderRadius: 'var(--radius-lg)',
@@ -231,7 +237,7 @@ export const CoupleStory: React.FC = () => {
               boxShadow: 'var(--shadow-editorial)',
               textAlign: 'center',
             }}
-            className="story-col-center"
+            className="story-col-center lux-card lux-edge"
           >
             <div style={{ margin: '0 auto' }}>
               <Sparkles size={22} color="var(--accent-gold)" />
@@ -318,6 +324,7 @@ export const CoupleStory: React.FC = () => {
           >
             <TiltCard max={4} style={{ borderRadius: 'var(--radius-lg)' }}>
             <div
+              className="lux-card lux-card--layered"
               style={{
                 position: 'relative',
                 border: '1px solid rgba(196, 163, 106, 0.4)',

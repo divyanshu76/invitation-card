@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { weddingData } from '../data/weddingData';
 import { TiltCard } from './TiltCard';
+import { SectionDecor } from './decor/SectionDecor';
 
 export const DivineBlessings: React.FC = () => {
   return (
@@ -17,6 +18,8 @@ export const DivineBlessings: React.FC = () => {
       }}
       aria-label="Divine Blessings of Lord Shiva and Goddess Parvati"
     >
+      <SectionDecor variant="blessings" />
+
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -82,7 +85,7 @@ export const DivineBlessings: React.FC = () => {
               boxShadow: 'var(--shadow-elevated)',
               borderRadius: 'var(--radius-xl)',
             }}
-            className="divine-artwork-card"
+            className="divine-artwork-card lux-card lux-card--layered lux-edge"
           >
             {/* Subtle Inner Arch Frame */}
             <TiltCard style={{ borderRadius: 'inherit' }}>
@@ -117,10 +120,6 @@ export const DivineBlessings: React.FC = () => {
 </TiltCard>
 
             {/* Corner Decorative Accents */}
-            <div style={{ position: 'absolute', top: '10px', left: '12px', width: '5px', height: '5px', backgroundColor: 'var(--accent-gold)', borderRadius: '50%' }} />
-            <div style={{ position: 'absolute', top: '10px', right: '12px', width: '5px', height: '5px', backgroundColor: 'var(--accent-gold)', borderRadius: '50%' }} />
-            <div style={{ position: 'absolute', bottom: '10px', left: '12px', width: '5px', height: '5px', backgroundColor: 'var(--accent-gold)', borderRadius: '50%' }} />
-            <div style={{ position: 'absolute', bottom: '10px', right: '12px', width: '5px', height: '5px', backgroundColor: 'var(--accent-gold)', borderRadius: '50%' }} />
           </motion.div>
 
           {/* Core Hindi Blessing Text */}
@@ -135,6 +134,7 @@ export const DivineBlessings: React.FC = () => {
               margin: '0 auto 24px',
               boxShadow: 'var(--shadow-subtle)',
             }}
+            className="lux-card"
           >
             <p
               style={{

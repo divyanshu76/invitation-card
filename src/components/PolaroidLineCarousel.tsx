@@ -149,7 +149,8 @@ function useSlideImages(slides: Slide[]): string[] {
 
 const PL_CSS = [
   '.pl-root{position:relative;width:100%;background:var(--pl-bg);color:var(--pl-ink);user-select:none;-webkit-user-select:none;outline:none;box-sizing:border-box}',
-  '.pl-stage{position:relative;width:100%;overflow:hidden;touch-action:pan-y;cursor:grab}',
+  // isolation keeps per-card z-indexes (up to 100) local, so cards never cover the fixed navbar/menu
+  '.pl-stage{position:relative;width:100%;overflow:hidden;touch-action:pan-y;cursor:grab;isolation:isolate}',
   '.pl-stage[data-drag="1"]{cursor:grabbing}',
   '.pl-root:focus-visible{box-shadow:inset 0 0 0 2px var(--pl-ink)}',
   '.pl-string{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}',

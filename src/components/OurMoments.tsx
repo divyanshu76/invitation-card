@@ -2,45 +2,48 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, Camera } from 'lucide-react';
 import PolaroidLineCarousel, { type Slide } from './PolaroidLineCarousel';
+import { SectionDecor } from './decor/SectionDecor';
 
+// Display copies are 760px WebP derivatives of the originals in /images/Image Carousel/
+// (~1 MB total instead of ~11 MB); the originals are kept unchanged.
 const MOMENT_SLIDES: Slide[] = [
   {
-    image: '/images/Image Carousel/Photo 1.jpeg',
+    image: '/images/Image Carousel/optimized/photo-1.webp',
     title: 'Cherished Smiles',
     caption: 'A gentle smile that started a beautiful lifetime journey.',
     alt: 'Vikash and Jyoti smiling together',
     objectPosition: 'center 12%',
   },
   {
-    image: '/images/Image Carousel/Photo 2.jpeg',
+    image: '/images/Image Carousel/optimized/photo-2.webp',
     title: 'Hand in Hand',
     caption: 'Stepping forward with love, trust, and shared dreams.',
     alt: 'Vikash and Jyoti holding hands',
     objectPosition: 'center 15%',
   },
   {
-    image: '/images/Image Carousel/Photo 3.jpeg',
+    image: '/images/Image Carousel/optimized/photo-3.webp',
     title: 'Timeless Grace',
     caption: 'Moments frozen in time, filled with warmth and quiet joy.',
     alt: 'Vikash and Jyoti candid portrait',
     objectPosition: 'center 10%',
   },
   {
-    image: '/images/Image Carousel/Photo 4.jpeg',
+    image: '/images/Image Carousel/optimized/photo-4.webp',
     title: 'Golden Radiance',
     caption: 'Two souls reflecting each other’s light and laughter.',
     alt: 'Vikash and Jyoti golden hour portrait',
     objectPosition: 'center 8%',
   },
   {
-    image: '/images/Image Carousel/Photo 5.jpeg',
+    image: '/images/Image Carousel/optimized/photo-5.webp',
     title: 'Endless Togetherness',
     caption: 'Blessed by elders, cheered by loved ones, destined forever.',
     alt: 'Vikash and Jyoti joyous celebration',
     objectPosition: 'center 8%',
   },
   {
-    image: '/images/Image Carousel/photo 6.jpeg',
+    image: '/images/Image Carousel/optimized/photo-6.webp',
     title: 'The Beginning of Always',
     caption: 'Writing the first page of our most enchanting story.',
     alt: 'Vikash and Jyoti romantic portrait',
@@ -63,6 +66,8 @@ export const OurMoments: React.FC = () => {
       }}
       aria-label="Our Cherished Moments - Photo Carousel"
     >
+      <SectionDecor variant="moments" />
+
       <div className="container" style={{ marginBottom: '20px' }}>
         {/* Section Header */}
         <motion.div
@@ -177,7 +182,7 @@ export const OurMoments: React.FC = () => {
           swing={0.85}
           autoplay={4500}
           string="#C4A36A"
-          background="var(--bg-warm-ivory)"
+          background="transparent"
           ink="var(--text-primary)"
           ariaLabel="Vikash and Jyoti wedding photo gallery"
         />

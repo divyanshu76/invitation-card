@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Navigation, Phone, Sparkles, Users } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
+import { SectionDecor } from './decor/SectionDecor';
 
 export const VenueMap: React.FC = () => {
   return (
@@ -14,6 +15,8 @@ export const VenueMap: React.FC = () => {
       }}
       aria-label="Wedding Venue and Location Map"
     >
+      <SectionDecor variant="venue" />
+
       <div className="container">
         {/* Section Header */}
         <motion.div
@@ -92,7 +95,7 @@ export const VenueMap: React.FC = () => {
               boxShadow: 'var(--shadow-editorial)',
               borderRadius: 'var(--radius-lg)',
             }}
-            className="venue-info-box"
+            className="venue-info-box lux-card lux-card--layered lux-edge"
           >
             <span
               style={{

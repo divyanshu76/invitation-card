@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { weddingData } from '../data/weddingData';
+import { SectionDecor } from './decor/SectionDecor';
 
 interface TimeLeft {
   days: number;
@@ -62,6 +63,8 @@ export const Countdown: React.FC = () => {
       }}
       aria-label="Wedding Countdown"
     >
+      <SectionDecor variant="countdown" />
+
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 25 }}
@@ -151,7 +154,7 @@ export const Countdown: React.FC = () => {
                 borderRadius: 'var(--radius-lg)',
                 padding: '32px 16px',
               }}
-              className="countdown-grid"
+              className="countdown-grid lux-card lux-edge"
             >
               {units.map((unit, index) => (
                 <div

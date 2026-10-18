@@ -1,0 +1,497 @@
+/* ==========================================================================
+   DECOR SYSTEM — per-section backgrounds, ornaments and luxury card treatments
+   Pattern tiles are tiny inline SVGs (no image requests).
+   ========================================================================== */
+
+:root {
+  --pattern-jaali: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23C4A36A' stroke-width='0.7' stroke-opacity='0.55'%3E%3Cpath d='M28 6 C 36 6, 40 12, 40 20 C 48 20, 50 28, 50 28 C 50 28, 48 36, 40 36 C 40 44, 36 50, 28 50 C 20 50, 16 44, 16 36 C 8 36, 6 28, 6 28 C 6 28, 8 20, 16 20 C 16 12, 20 6, 28 6 Z'/%3E%3Ccircle cx='28' cy='28' r='4'/%3E%3Cpath d='M0 0 L6 6 M56 0 L50 6 M0 56 L6 50 M56 56 L50 50'/%3E%3C/g%3E%3C/svg%3E");
+  --pattern-paisley: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cg fill='none' stroke-width='1'%3E%3Cg stroke='%23FFFFFF' stroke-opacity='0.75' transform='translate(-0.6 -0.6)'%3E%3Cpath d='M40 30 C 62 30, 70 54, 54 66 C 42 76, 24 70, 26 54 C 28 42, 44 44, 42 54'/%3E%3Cpath d='M100 92 C 122 92, 130 116, 114 128 C 102 138, 84 132, 86 116 C 88 104, 104 106, 102 116'/%3E%3Ccircle cx='104' cy='34' r='5'/%3E%3Ccircle cx='34' cy='106' r='5'/%3E%3C/g%3E%3Cg stroke='%23A88647' stroke-opacity='0.22'%3E%3Cpath d='M40 30 C 62 30, 70 54, 54 66 C 42 76, 24 70, 26 54 C 28 42, 44 44, 42 54'/%3E%3Cpath d='M100 92 C 122 92, 130 116, 114 128 C 102 138, 84 132, 86 116 C 88 104, 104 106, 102 116'/%3E%3Ccircle cx='104' cy='34' r='5'/%3E%3Ccircle cx='34' cy='106' r='5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  --pattern-dots: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Ccircle cx='11' cy='11' r='0.9' fill='%23C4A36A' fill-opacity='0.35'/%3E%3C/svg%3E");
+  --filigree-tl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg transform='rotate(0 17 17)' fill='none' stroke='%23C4A36A' stroke-width='1'%3E%3Cpath d='M2 30 L2 6 C2 3.8 3.8 2 6 2 L30 2'/%3E%3Cpath d='M7 24 L7 10 C7 8.3 8.3 7 10 7 L24 7' stroke-opacity='0.6'/%3E%3Cpath d='M12 12 C 16 12, 18 15, 15 17 C 13 18, 12 16, 13.5 15'/%3E%3Ccircle cx='2' cy='30' r='1.4' fill='%23C4A36A'/%3E%3Ccircle cx='30' cy='2' r='1.4' fill='%23C4A36A'/%3E%3C/g%3E%3C/svg%3E");
+  --filigree-tr: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg transform='rotate(90 17 17)' fill='none' stroke='%23C4A36A' stroke-width='1'%3E%3Cpath d='M2 30 L2 6 C2 3.8 3.8 2 6 2 L30 2'/%3E%3Cpath d='M7 24 L7 10 C7 8.3 8.3 7 10 7 L24 7' stroke-opacity='0.6'/%3E%3Cpath d='M12 12 C 16 12, 18 15, 15 17 C 13 18, 12 16, 13.5 15'/%3E%3Ccircle cx='2' cy='30' r='1.4' fill='%23C4A36A'/%3E%3Ccircle cx='30' cy='2' r='1.4' fill='%23C4A36A'/%3E%3C/g%3E%3C/svg%3E");
+  --filigree-br: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg transform='rotate(180 17 17)' fill='none' stroke='%23C4A36A' stroke-width='1'%3E%3Cpath d='M2 30 L2 6 C2 3.8 3.8 2 6 2 L30 2'/%3E%3Cpath d='M7 24 L7 10 C7 8.3 8.3 7 10 7 L24 7' stroke-opacity='0.6'/%3E%3Cpath d='M12 12 C 16 12, 18 15, 15 17 C 13 18, 12 16, 13.5 15'/%3E%3Ccircle cx='2' cy='30' r='1.4' fill='%23C4A36A'/%3E%3Ccircle cx='30' cy='2' r='1.4' fill='%23C4A36A'/%3E%3C/g%3E%3C/svg%3E");
+  --filigree-bl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg transform='rotate(270 17 17)' fill='none' stroke='%23C4A36A' stroke-width='1'%3E%3Cpath d='M2 30 L2 6 C2 3.8 3.8 2 6 2 L30 2'/%3E%3Cpath d='M7 24 L7 10 C7 8.3 8.3 7 10 7 L24 7' stroke-opacity='0.6'/%3E%3Cpath d='M12 12 C 16 12, 18 15, 15 17 C 13 18, 12 16, 13.5 15'/%3E%3Ccircle cx='2' cy='30' r='1.4' fill='%23C4A36A'/%3E%3Ccircle cx='30' cy='2' r='1.4' fill='%23C4A36A'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Section content always sits above the decor layer */
+section > .container,
+footer > .container {
+  position: relative;
+  z-index: 2;
+}
+
+.decor-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Pattern families with soft vignettes so pattern stays quiet behind content */
+.decor-countdown,
+.decor-ganesh,
+.decor-celebrations,
+.decor-venue {
+  background-image:
+    radial-gradient(ellipse at 50% 45%, rgba(248, 243, 236, 0.9) 0%, rgba(248, 243, 236, 0.5) 55%, rgba(248, 243, 236, 0) 88%),
+    var(--pattern-jaali);
+  background-size: 100% 100%, 56px 56px;
+}
+
+.decor-countdown {
+  background-image:
+    radial-gradient(ellipse at 50% 45%, rgba(241, 232, 222, 0.88) 0%, rgba(241, 232, 222, 0.45) 55%, rgba(241, 232, 222, 0) 88%),
+    var(--pattern-jaali);
+}
+
+.decor-story,
+.decor-timeline,
+.decor-rsvp {
+  background-image:
+    radial-gradient(ellipse at 50% 50%, rgba(241, 232, 222, 0.55) 0%, rgba(241, 232, 222, 0) 75%),
+    var(--pattern-paisley);
+  background-size: 100% 100%, 140px 140px;
+}
+
+.decor-moments,
+.decor-closing {
+  background-image:
+    radial-gradient(ellipse at 50% 40%, rgba(255, 252, 246, 0.9) 0%, rgba(255, 252, 246, 0) 70%),
+    var(--pattern-dots);
+  background-size: 100% 100%, 22px 22px;
+}
+
+.decor-blessings {
+  background-image:
+    radial-gradient(ellipse at 50% 36%, rgba(255, 230, 186, 0.5) 0%, rgba(255, 230, 186, 0) 55%),
+    radial-gradient(ellipse at 50% 40%, rgba(255, 252, 246, 0.85) 0%, rgba(255, 252, 246, 0) 70%),
+    var(--pattern-dots);
+  background-size: 100% 100%, 100% 100%, 22px 22px;
+}
+
+/* Soft cinematic vignette at section edges */
+.decor-layer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 62%, rgba(84, 38, 55, 0.05) 100%);
+}
+
+/* --- Toran garland ------------------------------------------------------ */
+.decor-toran {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(1100px, 150%);
+  height: auto;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 6px 5px rgba(84, 38, 55, 0.12));
+}
+
+.decor-toran--hero {
+  top: 62px;
+}
+
+@media (max-width: 768px) {
+  .decor-toran {
+    width: 170%;
+  }
+}
+
+.orn-bell {
+  transform-box: view-box;
+}
+
+[data-live="true"] .orn-bell {
+  animation: decor-bell-swing 5.5s ease-in-out infinite;
+}
+
+@keyframes decor-bell-swing {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(2.2deg); }
+  75% { transform: rotate(-2.2deg); }
+}
+
+/* --- Arches --------------------------------------------------------------- */
+.decor-hero-arch,
+.decor-temple-arch,
+.decor-closing-arch {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0.55;
+}
+
+.decor-hero-arch {
+  top: 150px;
+  bottom: 28px;
+  width: min(760px, 86%);
+}
+
+.decor-temple-arch {
+  top: 56px;
+  bottom: 40px;
+  width: min(680px, 92%);
+}
+
+.decor-closing-arch {
+  top: 130px;
+  bottom: 30px;
+  width: min(820px, 92%);
+  opacity: 0.45;
+}
+
+.decor-hero-arch .orn-arch,
+.decor-temple-arch .orn-arch,
+.decor-closing-arch .orn-arch {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.decor-finial {
+  position: absolute;
+  top: -34px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* --- Mandala -------------------------------------------------------------- */
+.decor-mandala {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  opacity: 0.16;
+}
+
+.decor-mandala--center {
+  left: 50%;
+  top: 50%;
+  margin: -260px 0 0 -260px;
+  opacity: 0.2;
+}
+
+.decor-mandala--edge-right { right: -260px; top: 18%; }
+.decor-mandala--edge-left { left: -260px; top: 22%; }
+.decor-mandala--mid { top: 46%; }
+
+[data-live="true"] .decor-mandala {
+  animation: decor-mandala-turn 140s linear infinite;
+}
+
+@keyframes decor-mandala-turn {
+  to { transform: rotate(360deg); }
+}
+
+/* --- Floral corners ------------------------------------------------------- */
+.decor-corner {
+  position: absolute;
+  width: clamp(110px, 15vw, 180px);
+  height: auto;
+  opacity: 0.85;
+}
+
+.decor-corner--tl { top: 0; left: 0; }
+.decor-corner--tr { top: 0; right: 0; }
+.decor-corner--bl { bottom: 0; left: 0; }
+.decor-corner--br { bottom: 0; right: 0; }
+
+/* --- Diyas ---------------------------------------------------------------- */
+.decor-diya {
+  position: absolute;
+  bottom: 22px;
+  filter: drop-shadow(0 6px 5px rgba(84, 38, 55, 0.18));
+}
+
+.decor-diya--left { left: max(18px, 6%); }
+.decor-diya--right { right: max(18px, 6%); }
+.decor-diya--low { bottom: 14px; }
+
+[data-live="true"] .orn-diya-flame {
+  animation: decor-flicker 2.4s ease-in-out infinite;
+}
+
+[data-live="true"] .orn-diya-halo {
+  animation: decor-halo 2.4s ease-in-out infinite;
+  transform-origin: 40px 30px;
+}
+
+@keyframes decor-flicker {
+  0%, 100% { transform: scale(1, 1) rotate(0deg); }
+  30% { transform: scale(0.94, 1.06) rotate(-2deg); }
+  60% { transform: scale(1.04, 0.95) rotate(1.5deg); }
+}
+
+@keyframes decor-halo {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+/* Mobile: lighter decorative density; corners stay small and clear of text */
+@media (max-width: 640px) {
+  .decor-corner { width: 84px; opacity: 0.7; }
+  .decor-mandala { width: 360px; height: 360px; }
+  .decor-mandala--center { margin: -180px 0 0 -180px; }
+  .decor-mandala--edge-right { right: -230px; }
+  .decor-mandala--edge-left { left: -230px; }
+  .decor-hero-arch { top: 140px; width: 94%; opacity: 0.42; }
+  .decor-temple-arch { width: 98%; opacity: 0.38; }
+  .decor-closing-arch { width: 96%; top: 110px; }
+  .decor-diya { transform: scale(0.78); transform-origin: bottom center; }
+  .decor-story .decor-mandala,
+  .decor-moments .decor-mandala,
+  .decor-venue .decor-mandala { display: none; }
+}
+
+/* ==========================================================================
+   LUXURY CARD — gold hairline inner frame, filigree corners, layered paper mount
+   ========================================================================== */
+.lux-card {
+  position: relative;
+  isolation: isolate;
+}
+
+.lux-card::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(196, 163, 106, 0.32);
+  border-radius: inherit;
+  background:
+    var(--filigree-tl) top left / 24px 24px no-repeat,
+    var(--filigree-tr) top right / 24px 24px no-repeat,
+    var(--filigree-br) bottom right / 24px 24px no-repeat,
+    var(--filigree-bl) bottom left / 24px 24px no-repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* A second sheet of paper offset behind the card for physical depth */
+.lux-card--layered::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(160deg, #F3EADF 0%, #E9DAC7 100%);
+  border: 1px solid rgba(196, 163, 106, 0.28);
+  transform: translateY(5px) rotate(-1.1deg);
+  box-shadow: 0 18px 30px -18px rgba(84, 38, 55, 0.35);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Gold-leaf edge highlight + soft ambient shadow */
+.lux-edge {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -1px 0 rgba(196, 163, 106, 0.18),
+    0 1px 2px rgba(84, 38, 55, 0.05),
+    0 16px 36px -16px rgba(84, 38, 55, 0.24) !important;
+}
+
+/* Ornamental lotus divider */
+.orn-divider {
+  display: block;
+  width: min(240px, 70%);
+  height: auto;
+  margin: 0 auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-live="true"] .orn-bell,
+  [data-live="true"] .decor-mandala,
+  [data-live="true"] .orn-diya-flame,
+  [data-live="true"] .orn-diya-halo {
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   SECTION-SPECIFIC REFINEMENTS
+   ========================================================================== */
+
+/* Sections crowned by a toran need clearance so the garland never touches text */
+section#ganesh-blessing,
+section#celebrations,
+section#rsvp,
+footer[aria-label*="Closing"] {
+  padding-top: 150px !important;
+}
+
+@media (max-width: 768px) {
+  section#ganesh-blessing,
+  section#celebrations,
+  section#rsvp,
+  footer[aria-label*="Closing"] {
+    padding-top: 104px !important;
+  }
+
+  /* Hero: room for the toran under the fixed navbar */
+  #hero {
+    padding-top: 138px !important;
+  }
+
+  .decor-toran--hero {
+    top: 58px;
+  }
+}
+
+@media (min-width: 769px) {
+  .decor-toran {
+    width: min(960px, 150%);
+  }
+
+  .decor-toran--hero {
+    width: min(1180px, 96%);
+  }
+
+  #hero {
+    padding-top: 150px !important;
+  }
+}
+
+/* Story: names stack symmetrically on phones */
+@media (max-width: 640px) {
+  .story-names-row {
+    flex-direction: column;
+    gap: 8px !important;
+  }
+}
+
+/* Timeline: brass medallion nodes with a soft halo */
+.timeline-node {
+  position: relative;
+  background: radial-gradient(circle at 35% 30%, #FFFFFF 0%, #FBF6EE 55%, #F1E4CF 100%) !important;
+  box-shadow:
+    0 0 0 4px rgba(248, 243, 236, 0.95),
+    0 0 0 5px rgba(196, 163, 106, 0.45),
+    0 8px 18px -6px rgba(84, 38, 55, 0.3) !important;
+}
+
+.timeline-card {
+  transition: transform 0.45s var(--ease-editorial), box-shadow 0.45s var(--ease-editorial);
+}
+
+@media (hover: hover) {
+  .timeline-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .ceremony-card:hover {
+    transform: translateY(-4px);
+  }
+}
+
+/* Celebrations: ceremony photos get an inner gold mat */
+.ceremony-img-wrapper {
+  position: relative;
+  box-shadow: 0 0 0 1px rgba(196, 163, 106, 0.4), 0 18px 34px -18px rgba(84, 38, 55, 0.45);
+}
+
+.ceremony-img-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(255, 248, 235, 0.65);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* RSVP: refined, tactile form controls */
+.input-field {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FCFAF7 100%);
+  box-shadow: inset 0 1px 2px rgba(84, 38, 55, 0.05);
+  min-height: 48px;
+}
+
+.input-field:hover {
+  border-color: rgba(196, 163, 106, 0.6);
+}
+
+.input-field:focus,
+.input-field:focus-visible {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: inset 0 1px 2px rgba(84, 38, 55, 0.05), 0 0 0 3px rgba(196, 163, 106, 0.22);
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-whatsapp {
+  min-height: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background-image: linear-gradient(135deg, #6A3047 0%, #542637 55%, #46202E 100%);
+  box-shadow: 0 10px 22px -10px rgba(84, 38, 55, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.btn-primary::after,
+.btn-whatsapp::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 246, 227, 0.22) 50%, transparent 65%);
+  transform: translateX(-120%);
+  transition: transform 0.8s var(--ease-soft);
+  pointer-events: none;
+}
+
+.btn-primary:hover::after,
+.btn-whatsapp:hover::after {
+  transform: translateX(120%);
+}
+
+.btn-secondary {
+  background-color: rgba(252, 250, 247, 0.7);
+}
+
+.btn-primary:active,
+.btn-secondary:active,
+.btn-whatsapp:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.wish-card {
+  transition: transform 0.4s var(--ease-editorial);
+}
+
+/* Venue map frame */
+.venue-map-col > div {
+  box-shadow: 0 0 0 6px #FCFAF7, 0 0 0 7px rgba(196, 163, 106, 0.4), 0 26px 44px -22px rgba(84, 38, 55, 0.4);
+}
+
+/* Envelope: gold-foil filigree border pressed into the burgundy paper */
+.envelope-filigree {
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(196, 163, 106, 0.38);
+  border-radius: 8px;
+  background:
+    var(--filigree-tl) top left / 26px 26px no-repeat,
+    var(--filigree-tr) top right / 26px 26px no-repeat,
+    var(--filigree-br) bottom right / 26px 26px no-repeat,
+    var(--filigree-bl) bottom left / 26px 26px no-repeat;
+  pointer-events: none;
+}
+
+/* Compact cards: finer frame so filigree never crowds dense text */
+.timeline-card::before,
+.wish-card::before {
+  inset: 5px;
+  background-size: 16px 16px, 16px 16px, 16px 16px, 16px 16px;
+}
+
+@media (max-width: 768px) {
+  .timeline-content-col > .timeline-card {
+    padding: 20px 20px !important;
+  }
+}
+
+/* The closing ❦ ornament already crowns this arch */
+.decor-closing-arch .decor-finial {
+  display: none;
+}

@@ -23,9 +23,37 @@ const T = {
   fadeOut: 0.6,
 };
 
+// Irregular scalloped rim where molten wax spread before the stamp was pressed
+const WAX_RIM = (() => {
+  const pts: string[] = [];
+  const n = 18;
+  for (let i = 0; i <= n * 2; i++) {
+    const a = (Math.PI * i) / n;
+    const r = i % 2 === 0 ? 48 : 44 + ((i * 7) % 3);
+    pts.push(`${(50 + r * Math.cos(a)).toFixed(1)},${(50 + r * Math.sin(a)).toFixed(1)}`);
+  }
+  return `M${pts.join(' L')} Z`;
+})();
+
 const WaxSealFace: React.FC = () => (
+  <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+  <svg
+    viewBox="0 0 100 100"
+    aria-hidden="true"
+    style={{ position: 'absolute', inset: '-9px', width: 'calc(100% + 18px)', height: 'calc(100% + 18px)', filter: 'drop-shadow(0 6px 8px rgba(0,0,0,0.45))' }}
+  >
+    <defs>
+      <radialGradient id="waxRimGrad" cx="38%" cy="32%" r="70%">
+        <stop offset="0%" stopColor="#E4C88E" />
+        <stop offset="60%" stopColor="#B08A4A" />
+        <stop offset="100%" stopColor="#7A5824" />
+      </radialGradient>
+    </defs>
+    <path d={WAX_RIM} fill="url(#waxRimGrad)" />
+  </svg>
   <div
     style={{
+      position: 'relative',
       width: '100%',
       height: '100%',
       borderRadius: '50%',
@@ -67,6 +95,7 @@ const WaxSealFace: React.FC = () => (
         {weddingData.monogram}
       </span>
     </div>
+  </div>
   </div>
 );
 
@@ -651,6 +680,22 @@ export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock, onComple
                 />
               </svg>
 
+              {/* Embossed paisley pressed into the paper, and a gold-foil filigree border */}
+              {/* Clipped to the pocket's V so nothing crosses the card when it rises */}
+              <div style={{ position: 'absolute', inset: 0, clipPath: 'polygon(0 0, 50% 46%, 100% 0, 100% 100%, 0 100%)' }}>
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    backgroundImage: 'var(--pattern-paisley)',
+                    backgroundSize: '96px 96px',
+                    opacity: 0.2,
+                    mixBlendMode: 'soft-light',
+                  }}
+                />
+                <div className="envelope-filigree" />
+              </div>
+
               {/* Pointer-tracked light glare across the paper (desktop) */}
               {isFinePointer && !motionOff && (
                 <motion.div
@@ -817,7 +862,7 @@ export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock, onComple
                       style={{
                         position: 'absolute',
                         inset: 0,
-                        clipPath: side === 'left' ? 'polygon(0 0, 54% 0, 46% 100%, 0 100%)' : 'polygon(54% 0, 100% 0, 100% 100%, 46% 100%)',
+                        clipPath: side === 'left' ? 'polygon(-30% -30%, 54% -30%, 46% 130%, -30% 130%)' : 'polygon(54% -30%, 130% -30%, 130% 130%, 46% 130%)',
                       }}
                     >
                       <WaxSealFace />

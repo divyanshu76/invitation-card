@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Sun, Sparkles, Heart, Moon } from 'lucide-react';
 import { weddingData, getWeekdayName, type Ceremony } from '../data/weddingData';
+import { SectionDecor } from './decor/SectionDecor';
 
 export const Timeline: React.FC = () => {
   const getIconForCeremony = (id: string) => {
@@ -31,6 +32,8 @@ export const Timeline: React.FC = () => {
       }}
       aria-label="Wedding Itinerary Timeline"
     >
+      <SectionDecor variant="timeline" />
+
       <div className="container">
         {/* Section Header */}
         <motion.div
@@ -106,7 +109,7 @@ export const Timeline: React.FC = () => {
               bottom: '40px',
               left: '50%',
               width: '1px',
-              backgroundColor: 'rgba(196, 163, 106, 0.45)',
+              background: 'linear-gradient(180deg, rgba(196, 163, 106, 0) 0%, #C4A36A 8%, #E4D5BC 50%, #C4A36A 92%, rgba(196, 163, 106, 0) 100%)',
               transformOrigin: 'top',
               zIndex: 1,
             }}
@@ -155,11 +158,13 @@ export const Timeline: React.FC = () => {
                           ? '0 6px 22px rgba(84, 38, 55, 0.08)'
                           : '0 4px 18px rgba(84, 38, 55, 0.04)',
                         display: 'inline-block',
+                        position: 'relative',
                         maxWidth: '350px',
                         width: '100%',
                         textAlign: 'left',
                         borderRadius: 'var(--radius-md)',
                       }}
+                      className="lux-card lux-edge timeline-card"
                     >
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '4px' }}>
                         <span
@@ -242,6 +247,7 @@ export const Timeline: React.FC = () => {
                         justifyContent: 'center',
                         boxShadow: '0 2px 10px rgba(84, 38, 55, 0.08)',
                       }}
+                      className="timeline-node"
                     >
                       {getIconForCeremony(ceremony.id)}
                     </div>

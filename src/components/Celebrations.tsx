@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, Sparkles, Navigation } from 'lucide-react';
 import { weddingData, getWeekdayName, type Ceremony } from '../data/weddingData';
+import { SectionDecor } from './decor/SectionDecor';
 
 export const Celebrations: React.FC = () => {
   return (
@@ -14,6 +15,8 @@ export const Celebrations: React.FC = () => {
       }}
       aria-label="Wedding Celebrations and Ceremonies"
     >
+      <SectionDecor variant="celebrations" />
+
       <div className="container">
         {/* Section Header */}
         <motion.div
@@ -97,7 +100,7 @@ export const Celebrations: React.FC = () => {
                   overflow: 'visible',
                   transition: 'transform 0.4s var(--ease-editorial), box-shadow 0.4s var(--ease-editorial)',
                 }}
-                className={`ceremony-card ${isWeddingHighlight ? 'wedding-highlight-card' : ''}`}
+                className={`ceremony-card lux-card lux-edge ${isWeddingHighlight ? 'wedding-highlight-card' : ''}`}
               >
                 {/* Visual Highlight Badge for the Wedding Night */}
                 {isWeddingHighlight && (

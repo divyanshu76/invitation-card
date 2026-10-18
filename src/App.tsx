@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import { MotionConfig } from 'framer-motion';
 import { IntroEnvelope } from './components/IntroEnvelope';
 import { ScrollProgress } from './components/ScrollProgress';
@@ -7,15 +7,19 @@ import { AudioPlayer } from './components/AudioPlayer';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Countdown } from './components/Countdown';
-import { GaneshBlessing } from './components/GaneshBlessing';
-import { CoupleStory } from './components/CoupleStory';
-import { OurMoments } from './components/OurMoments';
-import { DivineBlessings } from './components/DivineBlessings';
-import { Celebrations } from './components/Celebrations';
-import { Timeline } from './components/Timeline';
-import { VenueMap } from './components/VenueMap';
-import { RSVPSection } from './components/RSVPSection';
-import { ClosingSection } from './components/ClosingSection';
+
+// Below-the-fold scenes load as separate chunks right after first paint,
+// keeping the envelope + hero bundle small. They start downloading immediately,
+// so in-page navigation targets exist long before a visitor can reach them.
+const GaneshBlessing = lazy(() => import('./components/GaneshBlessing').then((m) => ({ default: m.GaneshBlessing })));
+const CoupleStory = lazy(() => import('./components/CoupleStory').then((m) => ({ default: m.CoupleStory })));
+const OurMoments = lazy(() => import('./components/OurMoments').then((m) => ({ default: m.OurMoments })));
+const DivineBlessings = lazy(() => import('./components/DivineBlessings').then((m) => ({ default: m.DivineBlessings })));
+const Celebrations = lazy(() => import('./components/Celebrations').then((m) => ({ default: m.Celebrations })));
+const Timeline = lazy(() => import('./components/Timeline').then((m) => ({ default: m.Timeline })));
+const VenueMap = lazy(() => import('./components/VenueMap').then((m) => ({ default: m.VenueMap })));
+const RSVPSection = lazy(() => import('./components/RSVPSection').then((m) => ({ default: m.RSVPSection })));
+const ClosingSection = lazy(() => import('./components/ClosingSection').then((m) => ({ default: m.ClosingSection })));
 
 export const App: React.FC = () => {
   const [isUnlocked, setIsUnlocked] = useState(false);
@@ -51,6 +55,7 @@ export const App: React.FC = () => {
         {/* 2. Live Wedding Countdown — Directly below Hero */}
         <Countdown />
 
+        <Suspense fallback={<div style={{ minHeight: '100vh' }} aria-hidden="true" />}>
         {/* 3. Auspicious Ganesh Blessing Invocation */}
         <GaneshBlessing />
 
@@ -74,10 +79,14 @@ export const App: React.FC = () => {
 
         {/* 9. RSVP Experience & Live Wishes Wall */}
         <RSVPSection />
+
+        </Suspense>
       </main>
 
       {/* 10. Final Closing Section */}
-      <ClosingSection />
+      <Suspense fallback={null}>
+        <ClosingSection />
+      </Suspense>
     </div>
     </MotionConfig>
   );
