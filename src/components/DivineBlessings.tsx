@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { weddingData } from '../data/weddingData';
+import { TiltCard } from './TiltCard';
 
 export const DivineBlessings: React.FC = () => {
   return (
@@ -65,11 +66,13 @@ export const DivineBlessings: React.FC = () => {
 
           {/* Architectural Arch Frame with Shiva-Parvati Artwork */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.96, rotateX: 14, y: 24 }}
+            whileInView={{ opacity: 1, scale: 1, rotateX: 0, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 1.0, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             style={{
+              transformPerspective: 1200,
+              transformOrigin: '50% 100%',
               position: 'relative',
               maxWidth: '560px',
               margin: '0 auto 40px',
@@ -82,7 +85,8 @@ export const DivineBlessings: React.FC = () => {
             className="divine-artwork-card"
           >
             {/* Subtle Inner Arch Frame */}
-            <div
+            <TiltCard style={{ borderRadius: 'inherit' }}>
+<div
               style={{
                 position: 'relative',
                 overflow: 'hidden',
@@ -110,6 +114,7 @@ export const DivineBlessings: React.FC = () => {
                 }}
               />
             </div>
+</TiltCard>
 
             {/* Corner Decorative Accents */}
             <div style={{ position: 'absolute', top: '10px', left: '12px', width: '5px', height: '5px', backgroundColor: 'var(--accent-gold)', borderRadius: '50%' }} />

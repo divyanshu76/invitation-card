@@ -171,7 +171,7 @@ export const OurMoments: React.FC = () => {
       <div style={{ position: 'relative', width: '100%' }}>
         <PolaroidLineCarousel
           slides={MOMENT_SLIDES}
-          stageHeight="clamp(380px, 48vh, 480px)"
+          stageHeight="clamp(400px, 52vh, 500px)"
           cardWidth={250}
           sag={32}
           swing={0.85}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { MotionConfig } from 'framer-motion';
 import { IntroEnvelope } from './components/IntroEnvelope';
 import { ScrollProgress } from './components/ScrollProgress';
 import { PetalBackground } from './components/PetalBackground';
@@ -18,12 +19,14 @@ import { ClosingSection } from './components/ClosingSection';
 
 export const App: React.FC = () => {
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isIntroDone, setIsIntroDone] = useState(false);
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="wedding-experience" style={{ position: 'relative', minHeight: '100vh' }}>
       {/* 0. Introductory Luxury Dark Burgundy Wedding Envelope (Appears on every initial visit / refresh) */}
-      {!isUnlocked && (
-        <IntroEnvelope onUnlock={() => setIsUnlocked(true)} />
+      {!isIntroDone && (
+        <IntroEnvelope onUnlock={() => setIsUnlocked(true)} onComplete={() => setIsIntroDone(true)} />
       )}
 
       {/* Subtle Paper Texture Overlay */}
@@ -43,7 +46,7 @@ export const App: React.FC = () => {
 
       <main>
         {/* 1. Cinematic Hero Section */}
-        <Hero />
+        <Hero revealed={isUnlocked} />
 
         {/* 2. Live Wedding Countdown — Directly below Hero */}
         <Countdown />
@@ -76,6 +79,7 @@ export const App: React.FC = () => {
       {/* 10. Final Closing Section */}
       <ClosingSection />
     </div>
+    </MotionConfig>
   );
 };
 

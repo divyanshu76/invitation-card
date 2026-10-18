@@ -307,6 +307,212 @@ p {
   box-shadow: 0 0 0 3px rgba(84, 38, 55, 0.08);
 }
 
+/* ==========================================================================
+   CINEMATIC LAYER — envelope, hero atmosphere, focus states
+   ========================================================================== */
+
+/* Visible, on-brand keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 3px;
+}
+
+.envelope-stage {
+  outline: none;
+  border-radius: 16px;
+}
+
+.envelope-stage:focus-visible {
+  outline: 2px solid rgba(228, 213, 188, 0.85);
+  outline-offset: 10px;
+}
+
+.envelope-unlock-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 13px 32px;
+  background-color: rgba(78, 32, 48, 0.92);
+  background-image: linear-gradient(135deg, #542436 0%, #3D1726 100%);
+  border: 1px solid rgba(196, 163, 106, 0.55);
+  border-radius: 12px;
+  color: #F8F3EC;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(228, 213, 188, 0.12);
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s var(--ease-editorial);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Slow champagne sheen to invite the tap */
+.envelope-unlock-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(228, 213, 188, 0.18) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: envelope-sheen 3.6s var(--ease-soft) 1.4s infinite;
+  pointer-events: none;
+}
+
+.envelope-unlock-btn:hover:not(:disabled) {
+  border-color: #C4A36A;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55), 0 0 0 4px rgba(196, 163, 106, 0.08);
+}
+
+.envelope-unlock-btn:focus-visible {
+  outline: 2px solid #E4D5BC;
+  outline-offset: 4px;
+}
+
+.envelope-unlock-btn:disabled {
+  cursor: default;
+}
+
+@keyframes envelope-sheen {
+  0% { transform: translateX(-120%); }
+  45%, 100% { transform: translateX(120%); }
+}
+
+/* Hero atmosphere */
+.hero-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-light {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.hero-light--gold {
+  width: 46vmax;
+  height: 46vmax;
+  left: -14vmax;
+  top: -12vmax;
+  background: radial-gradient(circle, rgba(228, 213, 188, 0.9) 0%, rgba(196, 163, 106, 0.25) 45%, transparent 70%);
+  animation: hero-drift 18s ease-in-out infinite alternate;
+}
+
+.hero-light--rose {
+  width: 40vmax;
+  height: 40vmax;
+  right: -12vmax;
+  bottom: -10vmax;
+  background: radial-gradient(circle, rgba(240, 222, 221, 0.95) 0%, rgba(221, 175, 182, 0.3) 45%, transparent 70%);
+  animation: hero-drift 22s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes hero-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(4vmax, 3vmax, 0) scale(1.08); }
+}
+
+.hero-dust {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FFF6E3 0%, #C4A36A 60%, transparent 100%);
+  box-shadow: 0 0 6px rgba(196, 163, 106, 0.6);
+  opacity: 0;
+  animation-name: hero-dust-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes hero-dust-float {
+  0% { opacity: 0; transform: translate3d(0, 12px, 0); }
+  25% { opacity: 0.85; }
+  75% { opacity: 0.6; }
+  100% { opacity: 0; transform: translate3d(8px, -60px, 0); }
+}
+
+.hero-monogram {
+  position: relative;
+  width: 74px;
+  height: 74px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.9), rgba(248, 243, 236, 0.75) 60%, rgba(241, 232, 222, 0.85));
+  border: 1px solid rgba(196, 163, 106, 0.55);
+  box-shadow: 0 10px 26px -10px rgba(84, 38, 55, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.hero-monogram-ring {
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 1px dashed rgba(196, 163, 106, 0.55);
+  animation: hero-ring-spin 40s linear infinite;
+}
+
+.hero-monogram-text {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+}
+
+@keyframes hero-ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+.hero-scroll-indicator {
+  border-radius: 10px;
+}
+
+.closing-glow {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: min(120vw, 900px);
+  height: min(120vw, 900px);
+  margin-left: calc(min(120vw, 900px) / -2);
+  margin-top: calc(min(120vw, 900px) / -2);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(228, 213, 188, 0.55) 0%, rgba(240, 222, 221, 0.35) 30%, transparent 62%);
+  animation: closing-breathe 7s ease-in-out infinite;
+}
+
+@keyframes closing-breathe {
+  0%, 100% { transform: scale(0.94); opacity: 0.75; }
+  50% { transform: scale(1.04); opacity: 1; }
+}
+
+.closing-heart {
+  animation: closing-heartbeat 3.2s ease-in-out infinite;
+}
+
+@keyframes closing-heartbeat {
+  0%, 100% { transform: scale(1); }
+  12% { transform: scale(1.12); }
+  24% { transform: scale(1); }
+  36% { transform: scale(1.08); }
+  48% { transform: scale(1); }
+}
+
+/* Shared elevated depth for artwork and story cards */
+.depth-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
 /* Accessibility: Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -314,6 +520,20 @@ p {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .hero-dust,
+  .envelope-unlock-btn::after,
+  .hero-light,
+  .closing-glow,
+  .closing-heart,
+  .hero-monogram-ring {
+    animation: none !important;
+  }
+
+  .hero-dust,
+  .envelope-unlock-btn::after {
+    display: none;
   }
 }
 
@@ -339,7 +559,7 @@ p {
     line-height: 1.12 !important;
   }
 
-  #hero h1 span {
+  #hero h1 .hero-heart {
     font-size: 1.35rem !important;
     margin: 2px 0 !important;
   }

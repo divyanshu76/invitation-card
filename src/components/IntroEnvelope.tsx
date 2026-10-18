@@ -1,56 +1,146 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Sparkles, MailOpen } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
 
 interface IntroEnvelopeProps {
+  /** Fired once the invitation has been revealed (ivory light has filled the screen). */
   onUnlock: () => void;
+  /** Fired after the overlay has fully faded and can be unmounted. */
+  onComplete?: () => void;
 }
 
-export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock }) => {
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+// Cinematic sequence timings (seconds)
+const T = {
+  sealBreak: 0,
+  flapOpen: 0.28,
+  cardRise: 0.75,
+  pushIn: 1.45,
+  bloom: 1.55,
+  reveal: 2.15,
+  fadeOut: 0.6,
+};
+
+const WaxSealFace: React.FC = () => (
+  <div
+    style={{
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      background:
+        'radial-gradient(circle at 35% 32%, #E8D098 0%, #C4A36A 45%, #947238 85%, #6B4E1E 100%)',
+      border: '1.5px solid #F0DFB8',
+      boxShadow:
+        '0 8px 22px rgba(0, 0, 0, 0.65), inset 0 2px 4px rgba(255, 255, 255, 0.5), inset 0 -2px 4px rgba(0, 0, 0, 0.45)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
+  >
+    {/* Double-Ring Recessed Embossed Border */}
+    <div
+      style={{
+        width: '46px',
+        height: '46px',
+        borderRadius: '50%',
+        border: '1.5px double rgba(90, 55, 15, 0.65)',
+        boxShadow: 'inset 0 1px 2px rgba(0, 0, 0, 0.35)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      {/* Embossed V ✤ J Monogram */}
+      <span
+        style={{
+          fontFamily: 'var(--font-serif)',
+          fontSize: '0.98rem',
+          color: '#341508',
+          fontWeight: 700,
+          letterSpacing: '0.04em',
+          lineHeight: 1,
+          textShadow: '0 1px 1px rgba(255, 245, 215, 0.65), 0 -1px 1px rgba(50, 30, 10, 0.5)',
+        }}
+      >
+        {weddingData.monogram}
+      </span>
+    </div>
+  </div>
+);
+
+export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock, onComplete }) => {
   const [isOpening, setIsOpening] = useState(false);
+  const [isRevealed, setIsRevealed] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
   const isTriggeredRef = useRef(false);
+  const timersRef = useRef<number[]>([]);
 
-  // Check reduced motion preference
-  const prefersReducedMotion =
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Read once — motion preference does not need to be reactive for a one-shot intro
+  const [prefersReducedMotion] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+  const [isFinePointer] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches
+  );
 
-  // Prevent background scrolling while envelope overlay is active
+  // Pointer-driven 3D tilt of the envelope (desktop only, restrained range)
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const tiltX = useSpring(useTransform(pointerY, [-1, 1], [7, -7]), { stiffness: 120, damping: 18 });
+  const tiltY = useSpring(useTransform(pointerX, [-1, 1], [-9, 9]), { stiffness: 120, damping: 18 });
+  const glareX = useTransform(pointerX, [-1, 1], ['20%', '80%']);
+  const glareY = useTransform(pointerY, [-1, 1], ['15%', '75%']);
+  const glare = useTransform(
+    [glareX, glareY],
+    ([x, y]) => `radial-gradient(circle at ${x} ${y}, rgba(255, 236, 200, 0.14) 0%, transparent 55%)`
+  );
+
+  // Prevent background scrolling while envelope overlay is active; clear timers on unmount
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    const timers = timersRef.current;
 
     return () => {
       document.body.style.overflow = originalOverflow;
+      timers.forEach((t) => window.clearTimeout(t));
     };
   }, []);
+
+  // Warm the hero photograph while the visitor reads the envelope
+  useEffect(() => {
+    const img = new Image();
+    img.decoding = 'async';
+    img.src = '/images/hero.jpg';
+  }, []);
+
+  const schedule = (fn: () => void, seconds: number) => {
+    timersRef.current.push(window.setTimeout(fn, seconds * 1000));
+  };
 
   const handleOpen = () => {
     if (isTriggeredRef.current) return;
     isTriggeredRef.current = true;
     setIsOpening(true);
+    pointerX.set(0);
+    pointerY.set(0);
 
-    if (prefersReducedMotion) {
-      setTimeout(() => {
-        setIsDismissed(true);
-        document.body.style.overflow = '';
-        onUnlock();
-      }, 350);
-      return;
-    }
+    const revealAt = prefersReducedMotion ? 0.3 : T.reveal;
+    const fadeFor = prefersReducedMotion ? 0.3 : T.fadeOut;
 
-    // Sequence timing:
-    // 0ms: Seal releases & fades
-    // 180ms: Flap smoothly rotates open 180deg around top hinge
-    // 420ms: Card emerges upward from inside the envelope pocket
-    // 1500ms: Entire overlay fades away smoothly to reveal celebration website
-    setTimeout(() => {
-      setIsDismissed(true);
+    // Timer-driven (not animation-callback-driven) so the visitor can never be trapped,
+    // even if an animation is interrupted or never fires its completion event.
+    schedule(() => {
+      setIsRevealed(true);
       document.body.style.overflow = '';
       onUnlock();
-    }, 1750);
+    }, revealAt);
+    schedule(() => {
+      setIsDismissed(true);
+      onComplete?.();
+    }, revealAt + fadeFor + 0.05);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -60,52 +150,84 @@ export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock }) => {
     }
   };
 
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isFinePointer || prefersReducedMotion || isOpening) return;
+    const { innerWidth, innerHeight } = window;
+    pointerX.set((e.clientX / innerWidth) * 2 - 1);
+    pointerY.set((e.clientY / innerHeight) * 2 - 1);
+  };
+
   if (isDismissed) return null;
 
-  return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 1 }}
-        animate={{ opacity: isOpening ? 0 : 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.65, delay: isOpening ? 1.15 : 0, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 99999,
-          backgroundColor: '#351421',
-          backgroundImage: `
-            radial-gradient(circle at 50% 46%, #4A1E2F 0%, #2D0F1B 65%, #1F0A13 100%),
-            radial-gradient(circle at 15% 20%, rgba(196, 163, 106, 0.08) 0%, transparent 45%),
-            radial-gradient(circle at 85% 80%, rgba(221, 175, 182, 0.06) 0%, transparent 45%)
-          `,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '24px 16px',
-          overflow: 'hidden',
-          cursor: isOpening ? 'default' : 'pointer',
-        }}
-        onClick={handleOpen}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Wedding Invitation Envelope"
-      >
-        {/* Subtle Paper Texture Overlay on Screen */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            pointerEvents: 'none',
-            opacity: 0.045,
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E\")",
-          }}
-        />
+  const motionOff = prefersReducedMotion;
 
-        {/* Ambient Drifting Rose Petals */}
-        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
+  return (
+    <motion.div
+      initial={{ opacity: 1 }}
+      animate={{ opacity: isRevealed ? 0 : 1 }}
+      transition={{ duration: motionOff ? 0.3 : T.fadeOut, ease: EASE }}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 99999,
+        backgroundColor: '#351421',
+        backgroundImage: `
+          radial-gradient(circle at 50% 46%, #4A1E2F 0%, #2D0F1B 65%, #1F0A13 100%),
+          radial-gradient(circle at 15% 20%, rgba(196, 163, 106, 0.08) 0%, transparent 45%),
+          radial-gradient(circle at 85% 80%, rgba(221, 175, 182, 0.06) 0%, transparent 45%)
+        `,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 'max(24px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom))',
+        overflow: 'hidden',
+        cursor: isOpening ? 'default' : 'pointer',
+        pointerEvents: isRevealed ? 'none' : 'auto',
+      }}
+      onClick={handleOpen}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={() => {
+        pointerX.set(0);
+        pointerY.set(0);
+      }}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Wedding Invitation Envelope"
+    >
+      {/* Subtle Paper Texture Overlay on Screen */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          pointerEvents: 'none',
+          opacity: 0.045,
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E\")",
+        }}
+      />
+
+      {/* Soft spotlight that follows the envelope — gives a stage-lit, filmic feel */}
+      <motion.div
+        aria-hidden="true"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isOpening ? 0.9 : 0.55 }}
+        transition={{ duration: 1.2, ease: EASE }}
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          width: 'min(130vw, 900px)',
+          height: 'min(130vw, 900px)',
+          transform: 'translate(-50%, -50%)',
+          background: 'radial-gradient(circle, rgba(196, 163, 106, 0.16) 0%, rgba(196, 163, 106, 0.04) 40%, transparent 68%)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Ambient Drifting Rose Petals */}
+      {!motionOff && (
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }} aria-hidden="true">
           {[...Array(6)].map((_, i) => (
             <motion.div
               key={i}
@@ -139,83 +261,131 @@ export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock }) => {
             />
           ))}
         </div>
+      )}
 
-        {/* Top Header Text with Balanced Proportions */}
-        <motion.div
-          initial={{ opacity: 0, y: -16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+      {/* Top Header Text with Balanced Proportions */}
+      <motion.div
+        initial={{ opacity: 0, y: -16 }}
+        animate={isOpening ? { opacity: 0, y: -24 } : { opacity: 1, y: 0 }}
+        transition={{ duration: isOpening ? 0.6 : 0.8, delay: isOpening ? 0.9 : 0.1, ease: EASE }}
+        style={{
+          textAlign: 'center',
+          marginBottom: '26px',
+          zIndex: 2,
+          padding: '0 12px',
+        }}
+      >
+        {/* Sacred Sanskrit Invocation */}
+        <span
           style={{
-            textAlign: 'center',
-            marginBottom: '26px',
-            zIndex: 2,
-            padding: '0 12px',
+            display: 'block',
+            fontFamily: 'var(--font-hindi)',
+            fontSize: 'clamp(1rem, 2.8vw, 1.3rem)',
+            color: '#C4A36A',
+            letterSpacing: '0.14em',
+            fontWeight: 500,
+            marginBottom: '8px',
+            textShadow: '0 2px 10px rgba(0, 0, 0, 0.45)',
           }}
         >
-          {/* Sacred Sanskrit Invocation */}
-          <span
-            style={{
-              display: 'block',
-              fontFamily: 'var(--font-hindi)',
-              fontSize: 'clamp(1rem, 2.8vw, 1.3rem)',
-              color: '#C4A36A',
-              letterSpacing: '0.14em',
-              fontWeight: 500,
-              marginBottom: '8px',
-              textShadow: '0 2px 10px rgba(0, 0, 0, 0.45)',
-            }}
-          >
-            {weddingData.weddingBlessing}
-          </span>
+          {weddingData.weddingBlessing}
+        </span>
 
-          {/* Couple Names Heading */}
-          <h1
-            style={{
-              fontFamily: 'var(--font-serif)',
-              fontSize: 'clamp(1.75rem, 5vw, 2.9rem)',
-              color: '#F8F3EC',
-              letterSpacing: '0.12em',
-              fontWeight: 400,
-              textTransform: 'uppercase',
-              margin: 0,
-              lineHeight: 1.15,
-              textShadow: '0 4px 18px rgba(0, 0, 0, 0.55)',
-            }}
-          >
-            {weddingData.groomName} WEDS {weddingData.brideName}
-          </h1>
+        {/* Couple Names Heading */}
+        <h1
+          style={{
+            fontFamily: 'var(--font-serif)',
+            fontSize: 'clamp(1.75rem, 5vw, 2.9rem)',
+            color: '#F8F3EC',
+            letterSpacing: '0.12em',
+            fontWeight: 400,
+            textTransform: 'uppercase',
+            margin: 0,
+            lineHeight: 1.15,
+            textShadow: '0 4px 18px rgba(0, 0, 0, 0.55)',
+          }}
+        >
+          {weddingData.groomName} WEDS {weddingData.brideName}
+        </h1>
 
-          {/* Elegant Gold Divider */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '12px',
-              marginTop: '10px',
-            }}
-          >
-            <div style={{ width: '38px', height: '1px', background: 'linear-gradient(90deg, transparent, #C4A36A)' }} />
-            <span style={{ color: '#C4A36A', fontSize: '0.75rem' }}>✤</span>
-            <div style={{ width: '38px', height: '1px', background: 'linear-gradient(90deg, #C4A36A, transparent)' }} />
-          </div>
-        </motion.div>
-
-        {/* Central Realistic Luxury Envelope Container */}
+        {/* Elegant Gold Divider */}
         <div
-          role="button"
-          tabIndex={0}
-          onKeyDown={handleKeyDown}
-          aria-label="Open wedding invitation envelope"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '12px',
+            marginTop: '10px',
+          }}
+        >
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 1.1, delay: 0.5, ease: EASE }}
+            style={{ width: '38px', height: '1px', background: 'linear-gradient(90deg, transparent, #C4A36A)', transformOrigin: 'right' }}
+          />
+          <span style={{ color: '#C4A36A', fontSize: '0.75rem' }}>✤</span>
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 1.1, delay: 0.5, ease: EASE }}
+            style={{ width: '38px', height: '1px', background: 'linear-gradient(90deg, #C4A36A, transparent)', transformOrigin: 'left' }}
+          />
+        </div>
+      </motion.div>
+
+      {/* Central Realistic Luxury Envelope Container */}
+      <div
+        role="button"
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
+        aria-label="Open wedding invitation envelope"
+        className="envelope-stage"
+        style={{
+          position: 'relative',
+          width: '100%',
+          maxWidth: '440px',
+          aspectRatio: '1.48 / 1',
+          perspective: '1400px',
+          zIndex: 10,
+        }}
+      >
+        {/* Soft contact shadow on the "table" beneath the envelope */}
+        <motion.div
+          aria-hidden="true"
+          animate={
+            isOpening
+              ? { opacity: 0.35, scaleX: 1.1 }
+              : motionOff
+                ? { opacity: 0.6, scaleX: 1 }
+                : { opacity: [0.6, 0.45, 0.6], scaleX: [1, 0.94, 1] }
+          }
+          transition={isOpening || motionOff ? { duration: 0.6 } : { duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+          style={{
+            position: 'absolute',
+            left: '8%',
+            right: '8%',
+            bottom: '-26px',
+            height: '30px',
+            borderRadius: '50%',
+            background: 'radial-gradient(ellipse at center, rgba(8, 2, 5, 0.75) 0%, transparent 70%)',
+            filter: 'blur(6px)',
+            pointerEvents: 'none',
+          }}
+        />
+
+        {/* 3D tilt + push-in wrapper */}
+        <motion.div
           style={{
             position: 'relative',
             width: '100%',
-            maxWidth: '440px',
-            aspectRatio: '1.48 / 1',
-            perspective: '1400px',
-            zIndex: 10,
-            outline: 'none',
+            height: '100%',
+            rotateX: tiltX,
+            rotateY: tiltY,
+            transformStyle: 'preserve-3d',
           }}
+          animate={isOpening && !motionOff ? { scale: [1, 1, 1.12], y: [0, 0, 36] } : { scale: 1, y: 0 }}
+          transition={{ duration: T.pushIn + 0.7, times: [0, T.pushIn / (T.pushIn + 0.7), 1], ease: EASE }}
         >
           {/* Main Envelope Body with 3D Depth & Realistic Shadow */}
           <motion.div
@@ -223,19 +393,19 @@ export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock }) => {
             animate={
               isOpening
                 ? {
-                    scale: 1.02,
                     y: -4,
                     boxShadow: '0 35px 80px -15px rgba(0, 0, 0, 0.85), 0 15px 35px -5px rgba(0, 0, 0, 0.6)',
                   }
-                : {
-                    scale: 1,
-                    y: [0, -4, 0],
-                    boxShadow: '0 25px 60px -12px rgba(0, 0, 0, 0.75), 0 10px 25px -5px rgba(0, 0, 0, 0.5)',
-                  }
+                : motionOff
+                  ? { y: 0, boxShadow: '0 25px 60px -12px rgba(0, 0, 0, 0.75), 0 10px 25px -5px rgba(0, 0, 0, 0.5)' }
+                  : {
+                      y: [0, -4, 0],
+                      boxShadow: '0 25px 60px -12px rgba(0, 0, 0, 0.75), 0 10px 25px -5px rgba(0, 0, 0, 0.5)',
+                    }
             }
             transition={
-              isOpening
-                ? { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+              isOpening || motionOff
+                ? { duration: 0.5, ease: EASE }
                 : { duration: 4.5, repeat: Infinity, ease: 'easeInOut' }
             }
             style={{
@@ -244,6 +414,7 @@ export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock }) => {
               height: '100%',
               borderRadius: '14px',
               overflow: 'visible',
+              transformStyle: 'preserve-3d',
             }}
           >
             {/* 1. LAYER 1: Rear Envelope Backplate & Inner Luxury Lining (z-index: 1) */}
@@ -291,13 +462,13 @@ export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock }) => {
               animate={
                 isOpening
                   ? {
-                      y: -112,
+                      y: '-46%',
                       opacity: 1,
                       scale: 1.02,
                     }
                   : { y: 0, opacity: 0.85 }
               }
-              transition={{ duration: 0.75, delay: 0.38, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.85, delay: motionOff ? 0 : T.cardRise, ease: EASE }}
               style={{
                 position: 'absolute',
                 top: '14px',
@@ -317,6 +488,7 @@ export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock }) => {
                 padding: '16px 20px',
                 textAlign: 'center',
                 zIndex: 3,
+                overflow: 'hidden',
               }}
             >
               {/* Inner Decorative Card Border */}
@@ -329,6 +501,22 @@ export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock }) => {
                   pointerEvents: 'none',
                 }}
               />
+
+              {/* Gold-foil sheen sweeping across the card as it rises */}
+              {!motionOff && (
+                <motion.div
+                  aria-hidden="true"
+                  initial={{ x: '-120%' }}
+                  animate={isOpening ? { x: '120%' } : { x: '-120%' }}
+                  transition={{ duration: 1.1, delay: T.cardRise + 0.35, ease: [0.4, 0, 0.2, 1] }}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(105deg, transparent 30%, rgba(228, 213, 188, 0.55) 48%, rgba(255, 255, 255, 0.7) 50%, transparent 66%)',
+                    pointerEvents: 'none',
+                  }}
+                />
+              )}
 
               <span
                 style={{
@@ -361,7 +549,7 @@ export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock }) => {
                   fontSize: '0.68rem',
                   letterSpacing: '0.22em',
                   textTransform: 'uppercase',
-                  color: '#C4A36A',
+                  color: '#A88647',
                   fontWeight: 600,
                   marginTop: '6px',
                 }}
@@ -462,13 +650,21 @@ export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock }) => {
                   strokeWidth="0.75"
                 />
               </svg>
+
+              {/* Pointer-tracked light glare across the paper (desktop) */}
+              {isFinePointer && !motionOff && (
+                <motion.div
+                  aria-hidden="true"
+                  style={{ position: 'absolute', inset: 0, background: glare, mixBlendMode: 'screen' }}
+                />
+              )}
             </div>
 
             {/* 4. LAYER 4: Precision Top Flap (Hinged at top center edge, z-index: isOpening ? 2 : 6) */}
             <motion.div
               initial={{ rotateX: 0 }}
               animate={isOpening ? { rotateX: 180 } : { rotateX: 0 }}
-              transition={{ duration: 0.72, delay: 0.18, ease: [0.4, 0, 0.2, 1] }}
+              transition={{ duration: 0.8, delay: motionOff ? 0 : T.flapOpen, ease: [0.45, 0, 0.2, 1] }}
               style={{
                 position: 'absolute',
                 top: 0,
@@ -487,6 +683,7 @@ export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock }) => {
                   position: 'absolute',
                   inset: 0,
                   backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
                   filter: 'drop-shadow(0 8px 18px rgba(0, 0, 0, 0.55))',
                 }}
               >
@@ -539,6 +736,7 @@ export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock }) => {
                   inset: 0,
                   transform: 'rotateX(180deg)',
                   backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
                 }}
               >
                 <svg
@@ -573,7 +771,7 @@ export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock }) => {
               </div>
             </motion.div>
 
-            {/* 5. LAYER 5: Centered Circular Embossed Gold Wax Seal (z-index: isOpening ? 1 : 7) */}
+            {/* 5. LAYER 5: Centered Circular Embossed Gold Wax Seal */}
             {/* Stable non-animated positioning wrapper to guarantee pixel-perfect horizontal centering relative to envelope body */}
             <div
               id="envelope-wax-seal"
@@ -584,147 +782,125 @@ export const IntroEnvelope: React.FC<IntroEnvelopeProps> = ({ onUnlock }) => {
                 transform: 'translate(-50%, -50%)',
                 width: '60px',
                 height: '60px',
-                zIndex: isOpening ? 1 : 7,
+                zIndex: 7,
                 pointerEvents: 'none',
               }}
             >
-              <motion.div
-                animate={
-                  isOpening
-                    ? { scale: 0.85, opacity: 0, y: -6 }
-                    : { scale: [1, 1.025, 1], opacity: 1, y: 0 }
-                }
-                transition={
-                  isOpening
-                    ? { duration: 0.22, ease: 'easeOut' }
-                    : { duration: 3.2, repeat: Infinity, ease: 'easeInOut' }
-                }
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: '50%',
-                  background:
-                    'radial-gradient(circle at 35% 32%, #E8D098 0%, #C4A36A 45%, #947238 85%, #6B4E1E 100%)',
-                  border: '1.5px solid #F0DFB8',
-                  boxShadow:
-                    '0 8px 22px rgba(0, 0, 0, 0.65), inset 0 2px 4px rgba(255, 255, 255, 0.5), inset 0 -2px 4px rgba(0, 0, 0, 0.45)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {/* Double-Ring Recessed Embossed Border */}
-                <div
-                  style={{
-                    width: '46px',
-                    height: '46px',
-                    borderRadius: '50%',
-                    border: '1.5px double rgba(90, 55, 15, 0.65)',
-                    boxShadow: 'inset 0 1px 2px rgba(0, 0, 0, 0.35)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
+              {!isOpening ? (
+                <motion.div
+                  animate={motionOff ? { scale: 1 } : { scale: [1, 1.025, 1] }}
+                  transition={motionOff ? { duration: 0 } : { duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+                  style={{ width: '100%', height: '100%' }}
                 >
-                  {/* Embossed V ✤ J Monogram */}
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-serif)',
-                      fontSize: '0.98rem',
-                      color: '#341508',
-                      fontWeight: 700,
-                      letterSpacing: '0.04em',
-                      lineHeight: 1,
-                      textShadow: '0 1px 1px rgba(255, 245, 215, 0.65), 0 -1px 1px rgba(50, 30, 10, 0.5)',
-                    }}
-                  >
-                    V ✤ J
-                  </span>
-                </div>
-              </motion.div>
+                  <WaxSealFace />
+                </motion.div>
+              ) : (
+                // Seal presses in, then cracks into two halves that drift apart and fall away
+                (['left', 'right'] as const).map((side) => {
+                  const dir = side === 'left' ? -1 : 1;
+                  return (
+                    <motion.div
+                      key={side}
+                      initial={{ x: 0, y: 0, rotate: 0, opacity: 1, scale: 1 }}
+                      animate={
+                        motionOff
+                          ? { opacity: 0 }
+                          : {
+                              scale: [1, 0.92, 0.92],
+                              x: [0, 0, dir * 26],
+                              y: [0, 0, 34],
+                              rotate: [0, 0, dir * 24],
+                              opacity: [1, 1, 0],
+                            }
+                      }
+                      transition={{ duration: motionOff ? 0.2 : 0.75, times: [0, 0.22, 1], ease: [0.4, 0, 0.6, 1] }}
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        clipPath: side === 'left' ? 'polygon(0 0, 54% 0, 46% 100%, 0 100%)' : 'polygon(54% 0, 100% 0, 100% 100%, 46% 100%)',
+                      }}
+                    >
+                      <WaxSealFace />
+                    </motion.div>
+                  );
+                })
+              )}
             </div>
           </motion.div>
-        </div>
+        </motion.div>
+      </div>
 
-        {/* Bottom Call-To-Action Control: Refined, Distinct & Elegant */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+      {/* Bottom Call-To-Action Control: Refined, Distinct & Elegant */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={isOpening ? { opacity: 0, y: 12 } : { opacity: 1, y: 0 }}
+        transition={{ duration: isOpening ? 0.4 : 0.8, delay: isOpening ? 0 : 0.25, ease: EASE }}
+        style={{
+          textAlign: 'center',
+          marginTop: '36px',
+          zIndex: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '12px',
+        }}
+      >
+        {/* TAP TO UNLOCK Button with Moderate Border Radius & Warm Burgundy Tone */}
+        <motion.button
+          id="envelope-unlock-btn"
+          type="button"
+          className="envelope-unlock-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleOpen();
+          }}
+          disabled={isOpening}
+          whileTap={motionOff ? undefined : { scale: 0.97 }}
+          aria-label="Tap to unlock wedding invitation"
+        >
+          <MailOpen size={16} color="#C4A36A" aria-hidden="true" />
+          <span>TAP TO UNLOCK</span>
+          <Sparkles size={14} color="#C4A36A" aria-hidden="true" />
+        </motion.button>
+
+        {/* Supporting Text */}
+        <p
           style={{
-            textAlign: 'center',
-            marginTop: '36px',
-            zIndex: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '12px',
+            fontFamily: 'var(--font-serif)',
+            fontStyle: 'italic',
+            fontSize: '0.98rem',
+            color: '#DDAFB6',
+            letterSpacing: '0.04em',
+            margin: 0,
           }}
         >
-          {/* TAP TO UNLOCK Button with Moderate Border Radius & Warm Burgundy Tone */}
-          <button
-            id="envelope-unlock-btn"
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleOpen();
-            }}
-            disabled={isOpening}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '10px',
-              padding: '13px 32px',
-              backgroundColor: 'rgba(78, 32, 48, 0.92)',
-              backgroundImage: 'linear-gradient(135deg, #542436 0%, #3D1726 100%)',
-              border: '1px solid rgba(196, 163, 106, 0.55)',
-              borderRadius: '12px',
-              color: '#F8F3EC',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '0.8rem',
-              fontWeight: 600,
-              letterSpacing: '0.22em',
-              textTransform: 'uppercase',
-              cursor: 'pointer',
-              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.45)',
-              transition: 'all 0.3s ease',
-              backdropFilter: 'blur(8px)',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(92, 38, 56, 0.96)';
-              e.currentTarget.style.borderColor = '#C4A36A';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 12px 28px rgba(0, 0, 0, 0.55)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(78, 32, 48, 0.92)';
-              e.currentTarget.style.borderColor = 'rgba(196, 163, 106, 0.55)';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.45)';
-            }}
-            aria-label="Tap to unlock wedding invitation"
-          >
-            <MailOpen size={16} color="#C4A36A" />
-            <span>TAP TO UNLOCK</span>
-            <Sparkles size={14} color="#C4A36A" />
-          </button>
-
-          {/* Supporting Text */}
-          <p
-            style={{
-              fontFamily: 'var(--font-serif)',
-              fontStyle: 'italic',
-              fontSize: '0.98rem',
-              color: '#DDAFB6',
-              letterSpacing: '0.04em',
-              margin: 0,
-            }}
-          >
-            "A beautiful celebration awaits"
-          </p>
-        </motion.div>
+          "A beautiful celebration awaits"
+        </p>
       </motion.div>
-    </AnimatePresence>
+
+      {/* Ivory light bloom — the dark stage dissolves into the invitation's paper colour,
+          so the hand-off to the ivory hero has no flash or hard cut. */}
+      {isOpening && !motionOff && (
+        <motion.div
+          aria-hidden="true"
+          initial={{ opacity: 0, scale: 0.4 }}
+          animate={{ opacity: 1, scale: 2.4 }}
+          transition={{ duration: T.reveal - T.bloom + 0.1, delay: T.bloom, ease: [0.5, 0, 0.3, 1] }}
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '42%',
+            width: '100vmax',
+            height: '100vmax',
+            marginLeft: '-50vmax',
+            marginTop: '-50vmax',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, #FCFAF7 0%, #F8F3EC 45%, rgba(248, 243, 236, 0.95) 60%, rgba(248, 243, 236, 0) 72%)',
+            pointerEvents: 'none',
+            zIndex: 20,
+          }}
+        />
+      )}
+    </motion.div>
   );
 };
-

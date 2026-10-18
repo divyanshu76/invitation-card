@@ -154,13 +154,16 @@ const PL_CSS = [
   '.pl-root:focus-visible{box-shadow:inset 0 0 0 2px var(--pl-ink)}',
   '.pl-string{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}',
   '.pl-card{position:absolute;left:0;top:0;width:var(--pl-cw);transform-origin:50% 0;will-change:transform;cursor:inherit}',
-  '.pl-print{margin-top:8px;background:#fbfaf7;padding:10px 10px 12px;box-shadow:0 4px 14px rgba(0,0,0,.12),0 20px 36px -14px rgba(84,38,55,.24);transition:transform .45s cubic-bezier(.2,.7,.2,1),filter .45s ease;border-radius:2px}',
+  '.pl-print{position:relative;margin-top:8px;background:#fbfaf7;background-image:linear-gradient(180deg,#fdfcf9 0%,#f7f3ec 100%);padding:10px 10px 12px;box-shadow:0 1px 2px rgba(84,38,55,.08),0 4px 14px rgba(0,0,0,.10),0 22px 38px -16px rgba(84,38,55,.30);transition:transform .45s cubic-bezier(.2,.7,.2,1),filter .45s ease,box-shadow .45s ease;border-radius:2px}',
+  '.pl-card[data-on="1"] .pl-print{box-shadow:0 1px 2px rgba(84,38,55,.08),0 8px 20px rgba(0,0,0,.12),0 30px 50px -18px rgba(84,38,55,.38)}',
   '.pl-card[data-on="0"] .pl-print{transform:scale(.88);filter:saturate(.78) brightness(.94)}',
-  '.pl-shot{position:relative;aspect-ratio:3/4;overflow:hidden;background:#f5efe6;border-radius:1px}',
+  '.pl-shot{position:relative;aspect-ratio:3/4;overflow:hidden;background:#f5efe6;border-radius:1px;box-shadow:inset 0 0 0 1px rgba(84,38,55,.06)}',
+  '.pl-shot::after{content:"";position:absolute;inset:0;background:linear-gradient(125deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,0) 38%),radial-gradient(ellipse at 50% 120%,rgba(84,38,55,.14),transparent 60%);pointer-events:none}',
   '.pl-shot img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:center 10%;display:block;pointer-events:none}',
   '.pl-note{height:38px;display:flex;align-items:center;justify-content:center;padding:4px 8px 0;font:italic 500 clamp(12.5px,1.2vw,15px)/1.2 var(--font-serif,ui-serif,Georgia,serif);color:#3b3833;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
-  '.pl-peg{position:absolute;left:50%;top:0;width:11px;height:25px;margin-left:-5.5px;border-radius:2px;background:linear-gradient(90deg,#c4a36a,#f1e4cf 45%,#a88647);box-shadow:0 2px 5px rgba(0,0,0,.3);z-index:2}',
-  '.pl-peg::after{content:"";position:absolute;left:4.5px;top:7px;width:2px;height:8px;background:rgba(80,60,30,.45);border-radius:1px}',
+  '.pl-peg{position:absolute;left:50%;top:-1px;width:12px;height:26px;margin-left:-6px;border-radius:2.5px 2.5px 3px 3px;background:linear-gradient(90deg,#a88647 0%,#e4d5bc 38%,#fff6e3 50%,#c4a36a 70%,#8f6f36 100%);box-shadow:0 2px 4px rgba(60,35,10,.35),0 6px 10px -4px rgba(60,35,10,.25),inset 0 1px 0 rgba(255,255,255,.5);z-index:2}',
+  '.pl-peg::before{content:"";position:absolute;left:-2px;right:-2px;top:9px;height:5px;border-radius:2px;background:linear-gradient(90deg,#8f6f36,#e4d5bc 45%,#a88647);box-shadow:0 1px 2px rgba(60,35,10,.35)}',
+  '.pl-peg::after{content:"";position:absolute;left:5px;top:16px;width:2px;height:7px;background:rgba(80,60,30,.4);border-radius:1px}',
   '.pl-info-bar{position:relative;width:100%;max-width:1200px;margin:18px auto 0;padding:0 clamp(20px,5vw,64px);display:flex;align-items:flex-end;justify-content:space-between;gap:clamp(16px,3vw,32px);box-sizing:border-box}',
   '.pl-cap{flex:1;min-width:0;max-width:620px}',
   '.pl-cap>*{display:block;animation:pl-in .55s cubic-bezier(.2,.8,.2,1) both}',
@@ -172,9 +175,10 @@ const PL_CSS = [
   '.pl-count-sep{opacity:.45;margin:0 5px}',
   '.pl-nav-buttons{display:flex;align-items:center;gap:10px}',
   '.pl-btn{appearance:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--pl-line);background:rgba(248,243,236,0.92);backdrop-filter:blur(8px);color:var(--pl-ink);display:grid;place-items:center;cursor:pointer;transition:all .25s ease;box-shadow:0 2px 8px rgba(84,38,55,0.08)}',
-  '.pl-btn:hover{background:var(--pl-ink);color:#F8F3EC;transform:scale(1.06);box-shadow:0 4px 14px rgba(84,38,55,0.2)}',
+  '@media (hover:hover){.pl-btn:hover{background:var(--pl-ink);color:#F8F3EC;transform:scale(1.06);box-shadow:0 4px 14px rgba(84,38,55,0.2)}}',
   '.pl-btn:active{transform:scale(0.96)}',
-  '.pl-btn:focus-visible{outline:2px solid var(--pl-ink);outline-offset:2px}',
+  '.pl-btn:focus-visible{outline:2px solid var(--accent-gold,#C4A36A);outline-offset:3px}',
+  '.pl-count b{font-family:var(--font-serif,Georgia,serif);font-size:18px}',
   '.pl-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}',
   '@keyframes pl-in{from{transform:translateY(100%);opacity:0}to{transform:none;opacity:1}}',
   '@media (max-width:640px){',
@@ -214,6 +218,7 @@ export default function PolaroidLineCarousel({
   const rootRef = React.useRef<HTMLDivElement | null>(null);
   const stageRef = React.useRef<HTMLDivElement | null>(null);
   const pathRef = React.useRef<SVGPathElement | null>(null);
+  const shadowPathRef = React.useRef<SVGPathElement | null>(null);
   const cards = React.useRef<(HTMLDivElement | null)[]>([]);
   const sim = React.useRef({
     off: 0,
@@ -233,7 +238,11 @@ export default function PolaroidLineCarousel({
   const lastTouch = React.useRef(0);
   const activeRef = React.useRef(0);
   const opts = React.useRef({ sag, swing });
-  opts.current = { sag, swing };
+  React.useEffect(() => {
+    opts.current = { sag, swing };
+  }, [sag, swing]);
+  // Pause autoplay while the visitor is hovering or has keyboard focus inside the carousel
+  const paused = React.useRef(false);
 
   // Calculate repeat count for a continuous seamless loop
   const repeatCount = n > 0 ? Math.max(3, Math.ceil(24 / n)) : 0;
@@ -269,14 +278,21 @@ export default function PolaroidLineCarousel({
     const ro = new ResizeObserver(() => {
       const r = stage.getBoundingClientRect();
       const isMobile = r.width < 640;
-      const cw = isMobile
-        ? Math.round(Math.max(160, Math.min(215, r.width * 0.54)))
-        : Math.round(Math.max(180, Math.min(cardWidth, r.width * 0.35, r.height * 0.55)));
+      // Largest card whose full Polaroid frame (photo + printed title strip + shadow)
+      // still fits below the string inside the stage — prevents bottom-frame clipping
+      // on short viewports. Mirrors the y0/sag/print metrics used in the frame loop.
+      const y0 = Math.max(62, Math.round(r.height * 0.17));
+      const sagEff = Math.min(sag, Math.round(r.height * 0.08));
+      const maxByHeight = ((r.height - (y0 + sagEff - 6) - 68 - 6) * 3) / 4;
+      const byWidth = isMobile
+        ? Math.max(160, Math.min(215, r.width * 0.54))
+        : Math.max(180, Math.min(cardWidth, r.width * 0.35, r.height * 0.55));
+      const cw = Math.round(Math.max(140, Math.min(byWidth, maxByHeight)));
       setSize({ w: r.width, h: r.height, cw });
     });
     ro.observe(stage);
     return () => ro.disconnect();
-  }, [cardWidth]);
+  }, [cardWidth, sag]);
 
   React.useEffect(() => {
     onChange?.(active);
@@ -360,10 +376,9 @@ export default function PolaroidLineCarousel({
         el.setAttribute('data-on', dist < spacing * 0.5 ? '1' : '0');
       }
 
-      pathRef.current?.setAttribute(
-        'd',
-        'M0 ' + y0 + ' Q' + w / 2 + ' ' + (y0 + 2 * effectiveSag) + ' ' + w + ' ' + y0
-      );
+      const stringD = 'M0 ' + y0 + ' Q' + w / 2 + ' ' + (y0 + 2 * effectiveSag) + ' ' + w + ' ' + y0;
+      pathRef.current?.setAttribute('d', stringD);
+      shadowPathRef.current?.setAttribute('d', stringD);
 
       // Track active original slide index
       const activeStep = Math.round(S.off / spacing);
@@ -395,8 +410,9 @@ export default function PolaroidLineCarousel({
   // Infinite Autoplay timer
   React.useEffect(() => {
     if (!autoplay || n < 2) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const t = window.setInterval(() => {
-      if (document.hidden || drag.current || performance.now() - lastTouch.current < autoplay) return;
+      if (document.hidden || paused.current || drag.current || performance.now() - lastTouch.current < autoplay) return;
       const currentStep = Math.round(sim.current.target / spacing);
       sim.current.target = (currentStep + 1) * spacing;
     }, autoplay);
@@ -493,6 +509,18 @@ export default function PolaroidLineCarousel({
       aria-label={ariaLabel}
       tabIndex={0}
       onKeyDown={onKey}
+      onPointerEnter={(e) => {
+        if (e.pointerType === 'mouse') paused.current = true;
+      }}
+      onPointerLeave={() => {
+        paused.current = false;
+      }}
+      onFocus={() => {
+        paused.current = true;
+      }}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) paused.current = false;
+      }}
     >
       <style>{PL_CSS}</style>
 
@@ -511,6 +539,7 @@ export default function PolaroidLineCarousel({
         onPointerCancel={onUp}
       >
         <svg className="pl-string" aria-hidden="true">
+          <path ref={shadowPathRef} fill="none" stroke="rgba(84,38,55,0.12)" strokeWidth="2.5" transform="translate(0 3)" />
           <path ref={pathRef} fill="none" stroke={stringColor} strokeWidth="1.5" strokeLinecap="round" />
         </svg>
 
@@ -536,6 +565,8 @@ export default function PolaroidLineCarousel({
                       alt={item.slide.alt || item.slide.title || ''}
                       style={{ objectPosition: pos }}
                       draggable={false}
+                      loading="lazy"
+                      decoding="async"
                     />
                   ) : null}
                 </div>

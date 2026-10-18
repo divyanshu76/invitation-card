@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Sparkles } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
+import { TiltCard } from './TiltCard';
 
 export const CoupleStory: React.FC = () => {
   return (
@@ -149,16 +150,18 @@ export const CoupleStory: React.FC = () => {
         >
           {/* Large Main Wedding Photograph (Hands Detail) */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, x: -30, rotateY: 16 }}
+            whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             style={{
               gridColumn: 'span 5',
               position: 'relative',
+              transformPerspective: 1200,
             }}
             className="story-col-left"
           >
+            <TiltCard max={4} style={{ borderRadius: 'var(--radius-lg)' }}>
             <div
               style={{
                 position: 'relative',
@@ -207,6 +210,7 @@ export const CoupleStory: React.FC = () => {
                 </span>
               </div>
             </div>
+            </TiltCard>
           </motion.div>
 
           {/* Central Editorial Text Block */}
@@ -301,16 +305,18 @@ export const CoupleStory: React.FC = () => {
 
           {/* Supporting Photograph (Varmala Ceremony Detail) */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, x: 30, rotateY: -16 }}
+            whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             style={{
               gridColumn: 'span 3',
               position: 'relative',
+              transformPerspective: 1200,
             }}
             className="story-col-right"
           >
+            <TiltCard max={4} style={{ borderRadius: 'var(--radius-lg)' }}>
             <div
               style={{
                 position: 'relative',
@@ -359,6 +365,7 @@ export const CoupleStory: React.FC = () => {
                 </span>
               </div>
             </div>
+            </TiltCard>
           </motion.div>
         </div>
       </div>

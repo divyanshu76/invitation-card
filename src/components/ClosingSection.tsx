@@ -3,6 +3,15 @@ import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
 import { weddingData } from '../data/weddingData';
 
+const CLOSING_DUST = [
+  { left: '12%', top: '30%', size: 2.5, delay: 0, dur: 10 },
+  { left: '24%', top: '70%', size: 2, delay: 2.4, dur: 12 },
+  { left: '38%', top: '20%', size: 2, delay: 4.2, dur: 11 },
+  { left: '62%', top: '78%', size: 2.5, delay: 1.2, dur: 10 },
+  { left: '76%', top: '26%', size: 2, delay: 3.3, dur: 13 },
+  { left: '88%', top: '60%', size: 3, delay: 5.1, dur: 11 },
+];
+
 export const ClosingSection: React.FC = () => {
   return (
     <footer
@@ -16,6 +25,18 @@ export const ClosingSection: React.FC = () => {
       }}
       aria-label="Wedding Closing and Family Regards"
     >
+      {/* Soft atmospheric finale: breathing candle-light halo + drifting gold dust */}
+      <div className="hero-atmosphere" aria-hidden="true">
+        <span className="closing-glow" />
+        {CLOSING_DUST.map((d, i) => (
+          <span
+            key={i}
+            className="hero-dust"
+            style={{ left: d.left, top: d.top, width: d.size, height: d.size, animationDelay: `${d.delay}s`, animationDuration: `${d.dur}s` }}
+          />
+        ))}
+      </div>
+
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -35,9 +56,29 @@ export const ClosingSection: React.FC = () => {
               maxWidth: '300px',
             }}
           >
-            <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, var(--accent-gold))' }} />
-            <span style={{ color: 'var(--accent-gold)', fontSize: '1rem' }}>❦</span>
-            <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, var(--accent-gold), transparent)' }} />
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.4, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, var(--accent-gold))', transformOrigin: 'right' }}
+            />
+            <motion.span
+              initial={{ opacity: 0, rotate: -90, scale: 0.6 }}
+              whileInView={{ opacity: 1, rotate: 0, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              style={{ color: 'var(--accent-gold)', fontSize: '1rem', display: 'inline-block' }}
+            >
+              ❦
+            </motion.span>
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.4, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, var(--accent-gold), transparent)', transformOrigin: 'left' }}
+            />
           </div>
 
           {/* Hindi Inscription */}
@@ -71,8 +112,8 @@ export const ClosingSection: React.FC = () => {
             }}
           >
             <span>{weddingData.groomName}</span>
-            <span style={{ color: 'var(--accent-gold)', display: 'inline-flex', alignItems: 'center' }}>
-              <Heart size={28} fill="var(--accent-gold)" />
+            <span className="closing-heart" style={{ color: 'var(--accent-gold)', display: 'inline-flex', alignItems: 'center' }}>
+              <Heart size={28} fill="var(--accent-gold)" aria-hidden="true" />
             </span>
             <span>{weddingData.brideName}</span>
           </h2>

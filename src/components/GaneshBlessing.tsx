@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { weddingData } from '../data/weddingData';
+import { TiltCard } from './TiltCard';
 
 export const GaneshBlessing: React.FC = () => {
   return (
@@ -61,11 +62,13 @@ export const GaneshBlessing: React.FC = () => {
 
           {/* Dedicated Lord Ganesha Artwork Container */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.96, rotateX: 14, y: 24 }}
+            whileInView={{ opacity: 1, scale: 1, rotateX: 0, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 1.0, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             style={{
+              transformPerspective: 1200,
+              transformOrigin: '50% 100%',
               position: 'relative',
               maxWidth: '380px',
               margin: '0 auto 36px',
@@ -78,7 +81,8 @@ export const GaneshBlessing: React.FC = () => {
             className="ganesh-artwork-card"
           >
             {/* Inner Arch Frame with subtle paper texture match */}
-            <div
+            <TiltCard style={{ borderRadius: 'inherit' }}>
+<div
               style={{
                 position: 'relative',
                 borderRadius: '24px 24px 16px 16px',
@@ -100,6 +104,7 @@ export const GaneshBlessing: React.FC = () => {
                 }}
               />
             </div>
+</TiltCard>
 
             {/* Subtle Corner Accents */}
             <div style={{ position: 'absolute', top: '10px', left: '12px', width: '5px', height: '5px', backgroundColor: 'var(--accent-gold)', borderRadius: '50%' }} />
